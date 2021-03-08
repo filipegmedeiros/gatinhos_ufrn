@@ -6,8 +6,8 @@ void main() {
     title: "Gatinhos UFRN",
     home: Home(),
     theme: ThemeData(
-      hintColor: Colors.deepPurple[400],
-      primaryColor: Colors.deepPurple[700], // TODO: importar tema do Figma
+      hintColor: Color(0xff3700b3),
+      primaryColor: Color(0xff3700b3), // TODO: importar tema do Figma
     ),
   ));
 }
@@ -25,7 +25,7 @@ class _HomeState extends State<Home> {
         // TODO: verificar se não é melhor por uma SliverAppBar no lugar da AppBar
         title: Text("Home"),
         centerTitle: true,
-        backgroundColor: Colors.deepPurple[900],
+        backgroundColor: Color(0xff3700b3),
       ),
       drawer: Drawer(
         child: ListView(
@@ -33,7 +33,7 @@ class _HomeState extends State<Home> {
           children: <Widget>[
             DrawerHeader(
               decoration: BoxDecoration(
-                color: Colors.deepPurple,
+                color: Color(0xff3700b3),
               ),
               child: Text(
                 "Menu",
