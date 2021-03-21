@@ -18,7 +18,7 @@ const GatinhosSchema = new mongoose.Schema({
     type: String,
   },
   vaccines: {
-    type: mongoose.SchemaTypes.Array,
+    type: Boolean,
   },
   castrate: {
     type: Boolean,
