@@ -39,6 +39,71 @@ const getOneGatinho = async (req, res) => {
 };
 
 const getAllGatinhos = async (req, res) => {
+  if (req.query.castrate) {
+    try {
+      let gatinhos = JSON.parse(
+        JSON.stringify(
+          await gatinhosService.getAllByCastrate(req.query.castrate)
+        )
+      );
+      return res.status(200).send(gatinhos);
+    } catch (error) {
+      console.log("Erro no vaccines", error);
+      return res.status(400).send();
+    }
+  }
+
+  if (req.query.vaccines) {
+    try {
+      let gatinhos = JSON.parse(
+        JSON.stringify(
+          await gatinhosService.getAllByVaccines(req.query.vaccines)
+        )
+      );
+      return res.status(200).send(gatinhos);
+    } catch (error) {
+      console.log("Erro no vaccines", error);
+      return res.status(400).send();
+    }
+  }
+
+  if (req.query.gender) {
+    try {
+      let gatinhos = JSON.parse(
+        JSON.stringify(await gatinhosService.getAllByGender(req.query.gender))
+      );
+      return res.status(200).send(gatinhos);
+    } catch (error) {
+      console.log("Erro no vaccines", error);
+      return res.status(400).send();
+    }
+  }
+
+  if (req.query.vaccines) {
+    try {
+      let gatinhos = JSON.parse(
+        JSON.stringify(
+          await gatinhosService.getAllByCastrate(req.query.vaccines)
+        )
+      );
+      return res.status(200).send(gatinhos);
+    } catch (error) {
+      console.log("Erro no vaccines", error);
+      return res.status(400).send();
+    }
+  }
+  if (req.query.age) {
+    try {
+      let gatinhos = JSON.parse(
+        JSON.stringify(await gatinhos.getAllByAge(req.query.age))
+      );
+      return res.status(200).send(gatinhosCastrate);
+    } catch (error) {
+      console.log("Erro no sex", error);
+      return res.status(400).send();
+    }
+  }
+
   try {
     let gatinhos = JSON.parse(JSON.stringify(await gatinhosService.getAll()));
     return res.status(200).send(gatinhos);

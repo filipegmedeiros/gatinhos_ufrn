@@ -1,11 +1,11 @@
 const bcrypt = require("bcrypt");
-const { userModel } = require("../model");
+const { usuarioModel } = require("../model");
 
 const create = async (role, login, password) => {
-  let user = await userModel.findOne({ login: login });
+  let user = await usuarioModel.findOne({ login: login });
   if (!user) {
     password = bcrypt.hashSync(password, 10);
-    let user = new userModel({ role, login, password });
+    let user = new usuarioModel({ role, login, password });
     await user.save();
   } else {
     throw "Usúario Existente";
@@ -14,7 +14,7 @@ const create = async (role, login, password) => {
 
 const verifyUser = async (login, password) => {
   try {
-    let user = await userModel.findOne({ login: login });
+    let user = await usuarioModel.findOne({ login: login });
     const passwordMatch = await bcrypt.compareSync(password, user.password);
     return passwordMatch;
   } catch (error) {

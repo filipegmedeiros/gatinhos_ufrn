@@ -1,7 +1,9 @@
 const gatinhosModel = require("./gatinhosModel");
-const userModel = require("./userModel");
+const adocaoModel = require("./adocaoModel");
+const usuarioModel = require("./usuarioModel");
 
 module.exports = {
   gatinhosModel,
-  userModel,
+  adocaoModel,
+  usuarioModel,
 };

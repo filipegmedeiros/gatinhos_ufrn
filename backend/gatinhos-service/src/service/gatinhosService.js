@@ -16,10 +16,6 @@ const del = async (id) => {
   return await gatinhosModel.findByIdAndDelete(id);
 };
 
-const exists = async (macAdress, name) => {
-  return await gatinhosModel.exists({ macAdress, name });
-};
-
 const create = async (
   name,
   description,
@@ -43,11 +39,29 @@ const create = async (
   }
 };
 
+const getAllByGender = async (gender) => {
+  return await gatinhosModel.find({ gender });
+};
+
+const getAllByAge = async (age) => {
+  return await gatinhosModel.find({ age: { $gte: age } });
+};
+const getAllByCastrate = async (castrate) => {
+  return await gatinhosModel.find({ castrate });
+};
+
+const getAllByVaccines = async (vaccines) => {
+  return await gatinhosModel.find({ vaccines });
+};
+
 module.exports = {
   create,
   del,
-  exists,
   existsById,
   getOne,
   getAll,
+  getAllByGender,
+  getAllByAge,
+  getAllByCastrate,
+  getAllByVaccines,
 };

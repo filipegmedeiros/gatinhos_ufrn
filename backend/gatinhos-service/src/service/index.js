@@ -1,7 +1,9 @@
 const gatinhosService = require("./gatinhosService");
-const userService = require("./userService");
+const usuarioService = require("./usuarioService");
+const adocaoService = require("./adocaoService");
 
 module.exports = {
-  userService,
+  usuarioService,
   gatinhosService,
+  adocaoService,
 };

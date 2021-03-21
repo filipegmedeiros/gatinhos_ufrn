@@ -1,7 +1,9 @@
 const gatinhosController = require("./gatinhosController");
-const userController = require("./userController");
+const usuarioController = require("./usuarioController");
+const adocaoController = require("./adocaoController");
 
 module.exports = {
   gatinhosController,
-  userController,
+  usuarioController,
+  adocaoController,
 };

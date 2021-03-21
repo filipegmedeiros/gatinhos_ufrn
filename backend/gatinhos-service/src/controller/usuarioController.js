@@ -1,11 +1,11 @@
-const { userService } = require("../service");
+const { usuarioService } = require("../service");
 const jwt = require("jsonwebtoken");
 
 const create = async (req, res) => {
   try {
     const { role, login, password } = req.body;
 
-    await userService.create(role, login, password);
+    await usuarioService.create(role, login, password);
     return res.status(200).send();
   } catch (error) {
     return res
@@ -18,14 +18,12 @@ const sign_in = async (req, res) => {
   const { login, password } = req.body;
 
   try {
-    if (await userService.verifyUser(login, password));
+    if (await usuarioService.verifyUser(login, password));
     return res.json({
       token:
         "JWT " +
         jwt.sign({ login: login, password: password }, process.env.SECRET),
     });
-
-    return a;
   } catch (error) {
     return res
       .status(401)
