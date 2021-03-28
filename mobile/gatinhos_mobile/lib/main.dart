@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gatinhos_mobile/ui/adoptionRequests.dart';
 import 'package:gatinhos_mobile/ui/login.dart';
 
 void main() {
@@ -50,6 +51,16 @@ class _HomeState extends State<Home> {
                 // change app to login page
                 Navigator.push(
                     context, MaterialPageRoute(builder: (context) => Login()));
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.read_more),
+              title: Text("Pedidos de adoção"),
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => AdoptionRequests()));
               },
             ),
             ListTile(
