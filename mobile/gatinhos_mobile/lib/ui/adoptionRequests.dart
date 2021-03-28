@@ -17,6 +17,7 @@ class _AdoptionRequestsState extends State<AdoptionRequests> {
         body: (ListView(
           children: [
             Card(
+              elevation: 2,
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
@@ -58,6 +59,7 @@ class _AdoptionRequestsState extends State<AdoptionRequests> {
               ),
             ),
             Card(
+              elevation: 2,
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
