@@ -14,129 +14,131 @@ class _AdoptionRequestsState extends State<AdoptionRequests> {
           centerTitle: true,
           backgroundColor: Color(0xff3700b3),
         ),
-        body: (ListView(
-          children: [
-            Card(
-              elevation: 2,
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Expanded(
-                      flex: 3,
-                      child: Container(
-                          width: 120,
-                          height: 140,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                                fit: BoxFit.cover,
-                                image: AssetImage('images/cat1.jpg')),
-                          ))),
-                  Expanded(
-                    flex: 7,
-                    child: Container(
-                      child: Padding(
-                        padding: const EdgeInsets.all(5),
-                        child: Column(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(10),
-                              child: Column(
-                                children: [
-                                  Row(children: <Widget>[
-                                    Text("Pedido de adoção #1",
-                                        style: TextStyle(fontSize: 18)),
-                                  ]),
-                                  SizedBox(height: 8),
-                                  Row(
+        body: (Padding(
+            padding: EdgeInsets.all(5),
+            child: ListView(
+              children: [
+                Card(
+                  elevation: 2,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Expanded(
+                          flex: 3,
+                          child: Container(
+                              width: 120,
+                              height: 140,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    fit: BoxFit.cover,
+                                    image: AssetImage('images/cat1.jpg')),
+                              ))),
+                      Expanded(
+                        flex: 7,
+                        child: Container(
+                          child: Padding(
+                            padding: const EdgeInsets.all(5),
+                            child: Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(10),
+                                  child: Column(
                                     children: [
-                                      Text("Feito por Sara Beatriz",
-                                          style: TextStyle(
-                                              color: Colors.grey[800],
-                                              fontSize: 12))
+                                      Row(children: <Widget>[
+                                        Text("Pedido de adoção #1",
+                                            style: TextStyle(fontSize: 18)),
+                                      ]),
+                                      SizedBox(height: 8),
+                                      Row(
+                                        children: [
+                                          Text("Feito por Sara Beatriz",
+                                              style: TextStyle(
+                                                  color: Colors.grey[800],
+                                                  fontSize: 12))
+                                        ],
+                                      ),
                                     ],
                                   ),
-                                ],
-                              ),
-                            ),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: <Widget>[
-                                TextButton(
-                                  child: const Text('VER MAIS'),
-                                  onPressed: () {/* ... */},
                                 ),
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: <Widget>[
+                                    TextButton(
+                                      child: const Text('VER MAIS'),
+                                      onPressed: () {/* ... */},
+                                    ),
+                                  ],
+                                )
                               ],
-                            )
-                          ],
+                            ),
+                          ),
                         ),
                       ),
-                    ),
+                    ],
                   ),
-                ],
-              ),
-            ),
-            Card(
-              elevation: 2,
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Expanded(
-                      flex: 3,
-                      child: Container(
-                          width: 120,
-                          height: 140,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                                fit: BoxFit.cover,
-                                image: AssetImage('images/cat2.jpg')),
-                          ))),
-                  Expanded(
-                    flex: 7,
-                    child: Container(
-                      child: Padding(
-                        padding: const EdgeInsets.all(5),
-                        child: Column(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(10),
-                              child: Column(
-                                children: [
-                                  Row(children: <Widget>[
-                                    Text("Pedido de adoção #2",
-                                        style: TextStyle(fontSize: 18)),
-                                  ]),
-                                  SizedBox(height: 8),
-                                  Row(
+                ),
+                Card(
+                  elevation: 2,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Expanded(
+                          flex: 3,
+                          child: Container(
+                              width: 120,
+                              height: 140,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    fit: BoxFit.cover,
+                                    image: AssetImage('images/cat2.jpg')),
+                              ))),
+                      Expanded(
+                        flex: 7,
+                        child: Container(
+                          child: Padding(
+                            padding: const EdgeInsets.all(5),
+                            child: Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(10),
+                                  child: Column(
                                     children: [
-                                      Text("Feito por Karine",
-                                          style: TextStyle(
-                                              color: Colors.grey[800],
-                                              fontSize: 12))
+                                      Row(children: <Widget>[
+                                        Text("Pedido de adoção #2",
+                                            style: TextStyle(fontSize: 18)),
+                                      ]),
+                                      SizedBox(height: 8),
+                                      Row(
+                                        children: [
+                                          Text("Feito por Karine",
+                                              style: TextStyle(
+                                                  color: Colors.grey[800],
+                                                  fontSize: 12))
+                                        ],
+                                      ),
                                     ],
                                   ),
-                                ],
-                              ),
-                            ),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: <Widget>[
-                                TextButton(
-                                  child: const Text('VER MAIS'),
-                                  onPressed: () {/* ... */},
                                 ),
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: <Widget>[
+                                    TextButton(
+                                      child: const Text('VER MAIS'),
+                                      onPressed: () {/* ... */},
+                                    ),
+                                  ],
+                                )
                               ],
-                            )
-                          ],
+                            ),
+                          ),
                         ),
                       ),
-                    ),
+                    ],
                   ),
-                ],
-              ),
-            ),
-          ],
-        )));
+                ),
+              ],
+            ))));
   }
 }
