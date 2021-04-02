@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class Login extends StatefulWidget {
   @override
@@ -51,17 +54,31 @@ class _LoginState extends State<Login> {
                 _inputPassword(),
                 Divider(),
                 ElevatedButton(
-                    onPressed: _sendToServer,
-                    child: Text(
-                      'LOGIN',
-                      style: TextStyle(fontSize: 20),
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      primary: Color(0xff6200ee),
-                      padding: EdgeInsets.fromLTRB(30, 15, 30, 15),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15)),
-                    )),
+                  child: Text(
+                    'LOGIN',
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    primary: Color(0xff6200ee),
+                    padding: EdgeInsets.fromLTRB(30, 15, 30, 15),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15)),
+                  ),
+                  onPressed: () {
+                    // Validate returns true if the form is valid, or false otherwise
+                    if (_formKey.currentState.validate()) {
+                      // If the form is valid, display a status snackbar
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('Verificando login...')));
+
+                      // save login
+                      _formKey.currentState.save();
+
+                      // send authentication to server
+                      _signIn(userName, password);
+                    }
+                  },
+                ),
               ],
             ),
           ),
@@ -144,16 +161,25 @@ class _LoginState extends State<Login> {
     return null;
   }
 
-  /// submit button onPressed function
-  void _sendToServer() {
-    // Validate returns true if the form is valid, or false otherwise
-    if (_formKey.currentState.validate()) {
-      // If the form is valid, display a status snackbar
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('Verificando login...')));
+  /// server authentication function
+  void _signIn(String userName, String password) async {
+    var url =
+        'mongodb://localhost:27017/sign_in'; // TODO verificar se esse é o endereço do servidor
+    final response = await http.post(
+      url,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'login': userName,
+        'password': password,
+      }),
+    );
 
-      // save login
-      _formKey.currentState.save();
-    }
+    print(response.body);
+    //if (response.statusCode == 201) {
+    //} else {
+    //  throw Exception('Failed to create album.');
+    //}
   }
 }

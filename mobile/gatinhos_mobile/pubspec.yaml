@@ -34,6 +34,9 @@ dependencies:
 
   #google_fonts: ^2.0.0
 
+  # to connect with database
+  http: 0.12.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
