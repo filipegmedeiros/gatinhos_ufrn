@@ -32,6 +32,8 @@ dependencies:
   # help to structure application in the MVC pattern
   mvc_pattern: ^6.0.0
 
+  #google_fonts: ^2.0.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
