@@ -2,7 +2,8 @@ const bcrypt = require("bcrypt");
 const { usuarioModel } = require("../model");
 
 const create = async (role, login, password) => {
-  let user = await usuarioModel.findOne({ login: login });
+  let user = await usuarioModel.findOne({ login });
+
   if (!user) {
     password = bcrypt.hashSync(password, 10);
     let user = new usuarioModel({ role, login, password });
@@ -14,7 +15,7 @@ const create = async (role, login, password) => {
 
 const verifyUser = async (login, password) => {
   try {
-    let user = await usuarioModel.findOne({ login: login });
+    let user = await usuarioModel.findOne({ login });
     const passwordMatch = await bcrypt.compareSync(password, user.password);
     return passwordMatch;
   } catch (error) {

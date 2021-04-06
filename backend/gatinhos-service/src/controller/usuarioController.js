@@ -18,16 +18,19 @@ const sign_in = async (req, res) => {
   const { login, password } = req.body;
 
   try {
-    if (await usuarioService.verifyUser(login, password));
-    return res.json({
-      token:
-        "JWT " +
-        jwt.sign({ login: login, password: password }, process.env.SECRET),
-    });
+    if (await usuarioService.verifyUser(login, password))
+      return res.json({
+        token:
+          "JWT " +
+          jwt.sign({ login: login, password: password }, process.env.SECRET),
+      });
+    else {
+      return res
+        .status(401)
+        .json({ message: "Falha na autenticação. Usuário ou senha inválidos" });
+    }
   } catch (error) {
-    return res
-      .status(401)
-      .json({ message: "Falha na autenticação. Usuário ou senha inválidos" });
+    console.log(error);
   }
 };
 
