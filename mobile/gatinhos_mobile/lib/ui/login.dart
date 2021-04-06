@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class Login extends StatefulWidget {
+  static const routeName = '/LoginPage';
   @override
   _LoginState createState() => _LoginState();
 }
@@ -161,25 +162,24 @@ class _LoginState extends State<Login> {
     return null;
   }
 
-  /// server authentication function
+  /// server authentication
   void _signIn(String userName, String password) async {
-    var url =
-        'mongodb://localhost:27017/sign_in'; // TODO verificar se esse é o endereço do servidor
+    var url = 'http://localhost:3001/auth/sign_in';
     final response = await http.post(
       url,
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
       body: jsonEncode(<String, String>{
-        'login': userName,
+        'username': userName,
         'password': password,
       }),
     );
 
-    print(response.body);
-    //if (response.statusCode == 201) {
-    //} else {
-    //  throw Exception('Failed to create album.');
-    //}
+    if (response.statusCode == 201) {
+      print(response.body);
+    } else {
+      throw Exception('Failed to create album.');
+    }
   }
 }
