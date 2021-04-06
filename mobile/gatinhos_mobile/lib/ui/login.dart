@@ -1,7 +1,10 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:gatinhos_mobile/ui/homePage.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Login extends StatefulWidget {
   static const routeName = '/LoginPage';
@@ -65,18 +68,42 @@ class _LoginState extends State<Login> {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15)),
                   ),
-                  onPressed: () {
+                  onPressed: () async {
+                    ScaffoldMessengerState scaffoldMessenger =
+                        ScaffoldMessenger.of(context);
+
                     // Validate returns true if the form is valid, or false otherwise
                     if (_formKey.currentState.validate()) {
                       // If the form is valid, display a status snackbar
-                      ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Verificando login...')));
+                      scaffoldMessenger.showSnackBar(const SnackBar(
+                        content: Text('Verificando login...'),
+                        duration: Duration(seconds: 1),
+                      ));
 
                       // save login
                       _formKey.currentState.save();
 
                       // send authentication to server
                       _signIn(userName, password);
+
+                      SharedPreferences prefs =
+                          await SharedPreferences.getInstance();
+                      String token = prefs.getString('token');
+
+                      if (token != null) {
+                        Navigator.pushNamed(context, Home.routeName);
+                        scaffoldMessenger.removeCurrentSnackBar();
+                        scaffoldMessenger.showSnackBar(SnackBar(
+                          content: Text('Login bem sucedido!'),
+                          duration: Duration(seconds: 1),
+                        ));
+                      } else {
+                        scaffoldMessenger.removeCurrentSnackBar();
+                        scaffoldMessenger.showSnackBar(SnackBar(
+                          content: Text('Login ou senha inválidos.'),
+                          duration: Duration(seconds: 1),
+                        ));
+                      }
                     }
                   },
                 ),
@@ -176,10 +203,15 @@ class _LoginState extends State<Login> {
       }),
     );
 
-    if (response.statusCode == 201) {
-      print(response.body);
-    } else {
-      throw Exception('Failed to create album.');
-    }
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var parse = jsonDecode(response.body);
+    print("resposta servidor: " + response.body);
+
+    // saving token in the device
+    await prefs.setString('token', parse["token"]);
+
+    // to retrieve token:
+    // String token = prefs.getString('token');
+    //print(token);
   }
 }

@@ -37,6 +37,9 @@ dependencies:
   # to connect with database
   http: 0.12.1
 
+  # persistency storage for simple data (used for token persistency)
+  shared_preferences: ^2.0.5
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
