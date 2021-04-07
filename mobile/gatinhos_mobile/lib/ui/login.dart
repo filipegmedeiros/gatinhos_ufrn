@@ -77,18 +77,21 @@ class _LoginState extends State<Login> {
                       // If the form is valid, display a status snackbar
                       scaffoldMessenger.showSnackBar(const SnackBar(
                         content: Text('Verificando login...'),
-                        duration: Duration(seconds: 1),
+                        duration: Duration(seconds: 2),
                       ));
 
                       // save login
                       _formKey.currentState.save();
 
                       // send authentication to server
-                      _signIn(userName, password);
+                      await _signIn(userName, password);
+                      print("reading token...\n");
 
                       SharedPreferences prefs =
                           await SharedPreferences.getInstance();
                       String token = prefs.getString('token');
+                      print("token atual:" + token);
+                      print("token read...\n");
 
                       // TODO fazer com try-catch
                       if (token != null) {
@@ -96,13 +99,13 @@ class _LoginState extends State<Login> {
                         scaffoldMessenger.removeCurrentSnackBar();
                         scaffoldMessenger.showSnackBar(SnackBar(
                           content: Text('Login bem sucedido!'),
-                          duration: Duration(seconds: 1),
+                          duration: Duration(seconds: 2),
                         ));
                       } else {
                         scaffoldMessenger.removeCurrentSnackBar();
                         scaffoldMessenger.showSnackBar(SnackBar(
                           content: Text('Login ou senha inválidos.'),
-                          duration: Duration(seconds: 1),
+                          duration: Duration(seconds: 2),
                         ));
                       }
                     }
@@ -191,7 +194,7 @@ class _LoginState extends State<Login> {
   }
 
   /// server authentication
-  void _signIn(String userName, String password) async {
+  _signIn(String userName, String password) async {
     var url = 'http://localhost:3001/auth/sign_in';
     final response = await http.post(
       url,
@@ -199,26 +202,24 @@ class _LoginState extends State<Login> {
         'Content-Type': 'application/json; charset=UTF-8',
       },
       body: jsonEncode(<String, String>{
-        'username': userName,
+        'login': userName,
         'password': password,
       }),
     );
+    //print("Logando " + userName + ", com password " + password);
+    //print("resposta servidor: " + response.body);
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var parse = jsonDecode(response.body);
-    print("Logando " + userName + ", com password " + password);
-    print("resposta servidor: " + response.body);
 
-    try {
-      // saving token in the device
-      await prefs.setString('token', parse["token"]);
-    } catch (erro) {
-      print("error message: " + parse["message"]);
-      // TODO throw error usuário ou senha inválidos
-    }
+    print("setting token...");
+    // saving token in the device's cache
+    await prefs.setString('token', parse["token"]);
+    // TODO throw error usuário ou senha inválidos
+    print("token set");
 
     // to retrieve token:
-    // String token = prefs.getString('token');
-    // print("token atual:" + token);
+    //String token = prefs.getString('token');
+    //print("token lido:" + token);
   }
 }
