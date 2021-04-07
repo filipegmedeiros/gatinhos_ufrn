@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gatinhos_mobile/ui/adoptionRequests.dart';
 import 'package:gatinhos_mobile/ui/login.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Home extends StatefulWidget {
   static const String routeName = "/HomePage";
@@ -39,14 +40,6 @@ class _HomeState extends State<Home> {
               ),
             ),
             ListTile(
-              leading: Icon(Icons.login),
-              title: Text("Login"),
-              onTap: () {
-                // change app to login page
-                Navigator.pushNamed(context, Login.routeName);
-              },
-            ),
-            ListTile(
               leading: Icon(Icons.read_more),
               title: Text("Pedidos de adoção"),
               onTap: () {
@@ -64,6 +57,28 @@ class _HomeState extends State<Home> {
                 //Navigator.pop(context);
                 Navigator.push(
                     context, MaterialPageRoute(builder: (context) => Home()));
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.login),
+              title: Text("Login"),
+              onTap: () {
+                // change app to login page
+                Navigator.pushNamed(context, Login.routeName);
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.logout),
+              title: Text("Logout"),
+              onTap: () async {
+                // logout
+                SharedPreferences prefs = await SharedPreferences.getInstance();
+                prefs.clear();
+                prefs
+                    .commit(); // On iOS, synchronize is marked deprecated. On Android, we commit every set.
+
+                // go to home
+                Navigator.pushNamed(context, Home.routeName);
               },
             ),
           ],
