@@ -46,7 +46,7 @@ class _AdoptionRequestsState extends State<AdoptionRequests> {
                                     children: [
                                       Row(children: <Widget>[
                                         Text("Pedido de adoção #1",
-                                            style: TextStyle(fontSize: 18)),
+                                            style: TextStyle(fontSize: 20)),
                                       ]),
                                       SizedBox(height: 8),
                                       Row(
@@ -54,7 +54,7 @@ class _AdoptionRequestsState extends State<AdoptionRequests> {
                                           Text("Feito por Sara Beatriz",
                                               style: TextStyle(
                                                   color: Colors.grey[800],
-                                                  fontSize: 12))
+                                                  fontSize: 14))
                                         ],
                                       ),
                                     ],
@@ -105,16 +105,16 @@ class _AdoptionRequestsState extends State<AdoptionRequests> {
                                   child: Column(
                                     children: [
                                       Row(children: <Widget>[
-                                        Text("Pedido de adoção #2",
-                                            style: TextStyle(fontSize: 18)),
+                                        Text("Pedido de adoção #1",
+                                            style: TextStyle(fontSize: 20)),
                                       ]),
                                       SizedBox(height: 8),
                                       Row(
                                         children: [
-                                          Text("Feito por Karine",
+                                          Text("Feito por Sara Beatriz",
                                               style: TextStyle(
                                                   color: Colors.grey[800],
-                                                  fontSize: 12))
+                                                  fontSize: 14))
                                         ],
                                       ),
                                     ],
