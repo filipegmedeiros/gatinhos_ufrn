@@ -5,6 +5,7 @@ import 'package:gatinhos_mobile/ui/registerCat.dart';
 
 void main() {
   runApp(MaterialApp(
+    debugShowCheckedModeBanner: false,
     title: "Gatinhos UFRN",
     home: Home(),
     theme: ThemeData(

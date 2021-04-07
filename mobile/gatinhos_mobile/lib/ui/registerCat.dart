@@ -182,7 +182,7 @@ class _RegisterCatState extends State<RegisterCat> {
               });
             }),
         CheckboxListTile(
-            title: Text("Vacinas"),
+            title: Text("Vacinado(a)"),
             controlAffinity: ListTileControlAffinity.leading,
             value: _vacinasChecked,
             onChanged: (bool value) {
