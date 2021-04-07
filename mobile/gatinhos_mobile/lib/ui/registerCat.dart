@@ -39,6 +39,8 @@ class _RegisterCatState extends State<RegisterCat> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
+                  _inputImage(),
+                  Divider(),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
@@ -74,9 +76,14 @@ class _RegisterCatState extends State<RegisterCat> {
         )));
   }
 
+  // inputs Widget
+  _inputImage() {
+    return Container();
+  }
+
   _inputName() {
     return TextFormField(
-      keyboardType: TextInputType.name,
+      keyboardType: TextInputType.text,
       decoration: InputDecoration(
         labelText: "Nome",
         labelStyle: TextStyle(color: Colors.grey[700], fontSize: 18),
