@@ -37,9 +37,9 @@ class _LoginState extends State<Login> {
         backgroundColor: Color(0xff3700b3),
       ),
       backgroundColor: Color(0xff8ee0ea),
-      body: Center(
+      body: Container(
         child: SingleChildScrollView(
-          padding: EdgeInsets.fromLTRB(40.0, 0.0, 40.0, 0.0),
+          padding: EdgeInsets.fromLTRB(25.0, 0.0, 25.0, 0.0),
           child: Form(
             key: _formKey,
             child: Column(
@@ -48,10 +48,10 @@ class _LoginState extends State<Login> {
                 Image.asset(
                   "images/LogoGatinhos.png",
                   fit: BoxFit.fitWidth,
-                  height: 220.0,
+                  height: 300.0,
                 ),
                 Divider(
-                  height: 55,
+                  height: 20,
                 ),
                 _inputUserName(),
                 Divider(),
@@ -66,7 +66,7 @@ class _LoginState extends State<Login> {
                     primary: Color(0xff6200ee),
                     padding: EdgeInsets.fromLTRB(30, 15, 30, 15),
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15)),
+                        borderRadius: BorderRadius.circular(5)),
                   ),
                   onPressed: () async {
                     ScaffoldMessengerState scaffoldMessenger =

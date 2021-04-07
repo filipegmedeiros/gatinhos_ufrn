@@ -31,9 +31,9 @@ class _RegisterCatState extends State<RegisterCat> {
           centerTitle: true,
           backgroundColor: Color(0xff3700b3),
         ),
-        body: Center(
+        body: Container(
             child: SingleChildScrollView(
-          padding: EdgeInsets.all(40.0),
+          padding: EdgeInsets.fromLTRB(15, 30, 15, 0),
           child: Form(
               key: _formKey,
               child: Column(
@@ -44,7 +44,7 @@ class _RegisterCatState extends State<RegisterCat> {
                     children: <Widget>[
                       Flexible(child: _inputName()),
                       SizedBox(
-                        width: 40.0,
+                        width: 15.0,
                       ),
                       Flexible(child: _inputAge())
                     ],
@@ -57,13 +57,17 @@ class _RegisterCatState extends State<RegisterCat> {
                   _inputSaude(),
                   Divider(),
                   ElevatedButton(
-                    onPressed: () {
-                      // TODO
-                    },
                     child: Text(
                       'CADASTRAR',
                       style: TextStyle(fontSize: 20),
                     ),
+                    style: ElevatedButton.styleFrom(
+                      primary: Color(0xff6200ee),
+                      padding: EdgeInsets.fromLTRB(30, 15, 30, 15),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5)),
+                    ),
+                    onPressed: () => {},
                   )
                 ],
               )),
@@ -178,7 +182,7 @@ class _RegisterCatState extends State<RegisterCat> {
               });
             }),
         CheckboxListTile(
-            title: Text("vacinas"),
+            title: Text("Vacinas"),
             controlAffinity: ListTileControlAffinity.leading,
             value: _vacinasChecked,
             onChanged: (bool value) {
