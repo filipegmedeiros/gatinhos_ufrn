@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gatinhos_mobile/ui/adoptionRequests.dart';
 import 'package:gatinhos_mobile/ui/login.dart';
+import 'package:gatinhos_mobile/ui/registerCat.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Home extends StatefulWidget {
@@ -40,6 +41,22 @@ class _HomeState extends State<Home> {
               ),
             ),
             ListTile(
+              leading: Icon(Icons.home),
+              title: Text("Home"),
+              onTap: () {
+                // change app to home page
+                Navigator.pushNamed(context, Home.routeName);
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.add_circle),
+              title: Text("Cadastrar"),
+              onTap: () {
+                // change to registerCat page
+                Navigator.pushNamed(context, RegisterCat.routeName);
+              },
+            ),
+            ListTile(
               leading: Icon(Icons.read_more),
               title: Text("Pedidos de adoção"),
               onTap: () {
@@ -50,20 +67,10 @@ class _HomeState extends State<Home> {
               },
             ),
             ListTile(
-              leading: Icon(Icons.home),
-              title: Text("Home"),
-              onTap: () {
-                // change app to home page
-                //Navigator.pop(context);
-                Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => Home()));
-              },
-            ),
-            ListTile(
               leading: Icon(Icons.login),
               title: Text("Login"),
               onTap: () {
-                // change app to login page
+                // change to login page
                 Navigator.pushNamed(context, Login.routeName);
               },
             ),

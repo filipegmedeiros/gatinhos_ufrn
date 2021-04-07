@@ -119,7 +119,7 @@ class _LoginState extends State<Login> {
   /// form field widgets
   _inputUserName() {
     return TextFormField(
-      keyboardType: TextInputType.name, // nome ou email ???
+      keyboardType: TextInputType.name,
       decoration: InputDecoration(
         labelText: "Usuário",
         labelStyle: TextStyle(color: Colors.grey[700], fontSize: 20),
