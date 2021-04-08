@@ -94,11 +94,11 @@ class _LoginState extends State<Login> {
                       SharedPreferences prefs =
                           await SharedPreferences.getInstance();
                       String token = prefs.getString('token');
-                      print("token atual:" + token);
-                      print("token read...\n");
+                      //print("token read...\n");
 
                       // TODO fazer com try-catch
                       if (token != null) {
+                        print("token atual:" + token);
                         Navigator.pushNamed(context, Home.routeName);
                         scaffoldMessenger.removeCurrentSnackBar();
                         scaffoldMessenger.showSnackBar(SnackBar(
@@ -216,11 +216,11 @@ class _LoginState extends State<Login> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var parse = jsonDecode(response.body);
 
-    print("setting token...");
+    //print("setting token...");
     // saving token in the device's cache
     await prefs.setString('token', parse["token"]);
-    // TODO throw error usuário ou senha inválidos
-    print("token set");
+
+    //print("token set");
 
     // to retrieve token:
     //String token = prefs.getString('token');

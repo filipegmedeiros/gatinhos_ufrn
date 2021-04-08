@@ -1,4 +1,0 @@
-DB_URI=mongodb://localhost:27017/DB_URI=mongodb+srv://root:gatinhos@gatinhos-cluster.iya2t.mongodb.net/gatinhos?retryWrites=true&w=majority
-DATABASE_NAME=test
-PORT=3001
-SECRET=e3e564a402dc03a392bb795c3946
