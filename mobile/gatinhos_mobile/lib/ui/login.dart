@@ -84,7 +84,11 @@ class _LoginState extends State<Login> {
                       _formKey.currentState.save();
 
                       // send authentication to server
-                      await _signIn(userName, password);
+                      try {
+                        await _signIn(userName, password);
+                      } catch (e) {
+                        throw "Erro de conexão com servidor.";
+                      }
                       print("reading token...\n");
 
                       SharedPreferences prefs =
@@ -195,7 +199,7 @@ class _LoginState extends State<Login> {
 
   /// server authentication
   _signIn(String userName, String password) async {
-    var url = 'http://localhost:3001/auth/sign_in';
+    var url = 'http://10.0.2.2:3001/auth/sign_in';
     final response = await http.post(
       url,
       headers: <String, String>{
