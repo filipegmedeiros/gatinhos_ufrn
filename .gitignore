@@ -224,3 +224,6 @@ app.*.symbols
 
 # Directory Logo
 .directory
+
+# emacs files
+*~
