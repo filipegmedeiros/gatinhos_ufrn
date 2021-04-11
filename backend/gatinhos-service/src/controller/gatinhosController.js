@@ -5,11 +5,13 @@ const createGatinho = async (req, res) => {
     const {
       name,
       description,
-      rescueDate,
+      //rescueDate,
       gender,
       vaccines,
       castrate,
     } = req.body;
+
+    let rescueDate = new Date();
 
     await gatinhosService.create(
       name,
@@ -22,19 +24,21 @@ const createGatinho = async (req, res) => {
     return res.status(200).send();
   } catch (error) {
     console.log("Erro no createGatinho", error);
-    return res.status(400).send();
+    return res.status(400).send(error.message);
   }
 };
 
 const getOneGatinho = async (req, res) => {
   const { id } = req.params;
   try {
-    let gatinho = await gatinhosService.getOne(id);
-
-    return res.status(200).send(gatinho);
+    if (await gatinhosService.existsById(id)) {
+      let gatinho = await gatinhosService.getOne(id);
+      return res.status(200).send(gatinho);
+    }
+    return res.status(400).send("Gatinho não encontrado!");
   } catch (error) {
     console.log("Erro no getOneGatinho", error);
-    return res.status(400).send();
+    return res.status(500).send();
   }
 };
 
@@ -79,19 +83,6 @@ const getAllGatinhos = async (req, res) => {
     }
   }
 
-  if (req.query.vaccines) {
-    try {
-      let gatinhos = JSON.parse(
-        JSON.stringify(
-          await gatinhosService.getAllByCastrate(req.query.vaccines)
-        )
-      );
-      return res.status(200).send(gatinhos);
-    } catch (error) {
-      console.log("Erro no vaccines", error);
-      return res.status(400).send();
-    }
-  }
   if (req.query.age) {
     try {
       let gatinhos = JSON.parse(

@@ -20,9 +20,7 @@ const sign_in = async (req, res) => {
   try {
     if (await usuarioService.verifyUser(login, password))
       return res.json({
-        token:
-          "JWT " +
-          jwt.sign({ login: login, password: password }, process.env.SECRET),
+        token: jwt.sign({ login }, process.env.SECRET),
       });
     else {
       return res
@@ -34,25 +32,7 @@ const sign_in = async (req, res) => {
   }
 };
 
-const loginRequired = async (req, res, next) => {
-  if (req.user) {
-    next();
-  } else {
-    return res.status(401).json({ message: "Usuário não autorizado" });
-  }
-};
-
-const profile = async (req, res, next) => {
-  if (req.user) {
-    res.send(req.user);
-    next();
-  } else {
-    return res.status(401).json({ message: "Token Inválido" });
-  }
-};
 module.exports = {
   create,
   sign_in,
-  loginRequired,
-  profile,
 };

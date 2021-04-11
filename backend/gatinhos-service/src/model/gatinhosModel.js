@@ -23,6 +23,9 @@ const GatinhosSchema = new mongoose.Schema({
   castrate: {
     type: Boolean,
   },
+  image: {
+    type: String,
+  },
 });
 
 module.exports = mongoose.model("Gatinhos", GatinhosSchema);

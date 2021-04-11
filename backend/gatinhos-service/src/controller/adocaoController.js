@@ -19,7 +19,7 @@ const createForm = async (req, res) => {
 const getOneForm = async (req, res) => {
   const { id } = req.params;
   try {
-    if (!adocaoService.existsById(id)) {
+    if (!(await adocaoService.existsById(id))) {
       return res.status(400).send("Formulário não existe");
     }
 
@@ -57,10 +57,9 @@ const updateBadge = async (req, res) => {
   const { id } = req.params;
   const { pedido } = req.query;
 
-  console.log(adocaoService.validateBadge(pedido));
   try {
     if (!adocaoService.validateBadge(pedido)) {
-      return res.status(422).send("Pedido Inválida");
+      return res.status(422).send("Pedido Inválido.");
     }
     await adocaoService.updateBadge(id, pedido);
     return res.status(200).send("Pedido atualizado para: " + pedido);
