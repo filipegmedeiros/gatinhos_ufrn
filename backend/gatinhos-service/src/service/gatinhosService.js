@@ -8,6 +8,15 @@ const getOne = async (id) => {
   return await gatinhosModel.findById(id);
 };
 
+const uploadImage = async (id, image) => {
+  return await gatinhosModel.findByIdAndUpdate(id, { image });
+};
+
+const getImage = async (id) => {
+  const gatinho = await getOne(id);
+  return gatinho.image;
+};
+
 const existsById = async (id) => {
   return await gatinhosModel.exists({ _id: id });
 };
@@ -24,19 +33,15 @@ const create = async (
   vaccines,
   castrate
 ) => {
-  try {
-    let gatinhos = new gatinhosModel({
-      name,
-      description,
-      rescueDate,
-      gender,
-      vaccines,
-      castrate,
-    });
-    await gatinhos.save();
-  } catch (error) {
-    console.log("Erro ao salvar o Gatinho: ", error);
-  }
+  let gatinhos = new gatinhosModel({
+    name,
+    description,
+    rescueDate,
+    gender,
+    vaccines,
+    castrate,
+  });
+  await gatinhos.save();
 };
 
 const getAllByGender = async (gender) => {
@@ -64,4 +69,6 @@ module.exports = {
   getAllByAge,
   getAllByCastrate,
   getAllByVaccines,
+  uploadImage,
+  getImage,
 };
