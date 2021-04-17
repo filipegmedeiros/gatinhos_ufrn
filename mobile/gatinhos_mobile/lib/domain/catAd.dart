@@ -1,4 +1,4 @@
-class AdoptionAd {
+class CatAd {
   int id;
   String img; // image path
   String catName;
@@ -7,7 +7,7 @@ class AdoptionAd {
   String sex;
   List<String> healthTags;
 
-  AdoptionAd(
+  CatAd(
       {this.id,
       this.img,
       this.catName,

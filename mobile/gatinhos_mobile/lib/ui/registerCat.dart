@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:gatinhos_mobile/domain/AdoptionAd.dart';
+import 'package:gatinhos_mobile/domain/catAd.dart';
 import 'package:image_picker/image_picker.dart';
 
 enum Sexo { Feminino, Masculino }
@@ -9,18 +9,18 @@ enum Sexo { Feminino, Masculino }
 class RegisterCat extends StatefulWidget {
   static const routeName = '/RegisterCat';
 
-  AdoptionAd adoptionAd;
+  CatAd catAd;
 
-  // Constructor that initialize the AdoptionAd
+  // Constructor that initialize the CatAd
   // Between braces because it is optional
-  RegisterCat({this.adoptionAd});
+  RegisterCat({this.catAd});
 
   @override
   _RegisterCatState createState() => _RegisterCatState();
 }
 
 class _RegisterCatState extends State<RegisterCat> {
-  AdoptionAd _editedAdoptionAd;
+  CatAd _editedCatAd;
   bool _userEdited = false;
 
   // input textfield controllers
@@ -42,13 +42,13 @@ class _RegisterCatState extends State<RegisterCat> {
     super.initState();
 
     // acessando o ad definido no widget(registerCat)
-    if (widget.adoptionAd == null) {
-      _editedAdoptionAd = AdoptionAd();
+    if (widget.catAd == null) {
+      _editedCatAd = CatAd();
     } else {
-      _editedAdoptionAd = widget.adoptionAd; // TODO check
-      nameController.text = _editedAdoptionAd.catName;
-      ageController.text = _editedAdoptionAd.catAge;
-      descriptionController.text = _editedAdoptionAd.description;
+      _editedCatAd = widget.catAd; // TODO check
+      nameController.text = _editedCatAd.catName;
+      ageController.text = _editedCatAd.catAge;
+      descriptionController.text = _editedCatAd.description;
     }
   }
 
@@ -87,9 +87,9 @@ class _RegisterCatState extends State<RegisterCat> {
       onWillPop: _requestPop,
       child: Scaffold(
         appBar: AppBar(
-          title: Text(_editedAdoptionAd.catName == null
+          title: Text(_editedCatAd.catName == null
               ? "Cadastro"
-              : "Editar " + _editedAdoptionAd.catName),
+              : "Editar " + _editedCatAd.catName),
           centerTitle: true,
           backgroundColor: Color(0xff3700b3),
         ),
@@ -136,7 +136,7 @@ class _RegisterCatState extends State<RegisterCat> {
                         // save form
                         _formKey.currentState.save();
 
-                        Navigator.pop(context, _editedAdoptionAd);
+                        Navigator.pop(context, _editedCatAd);
                       }
                     },
                   )
@@ -161,8 +161,8 @@ class _RegisterCatState extends State<RegisterCat> {
             shape: BoxShape.rectangle,
             image: DecorationImage(
               fit: BoxFit.contain,
-              image: _editedAdoptionAd.img != null
-                  ? FileImage(File(_editedAdoptionAd.img))
+              image: _editedCatAd.img != null
+                  ? FileImage(File(_editedCatAd.img))
                   : AssetImage("images/defaultCat.jpg"),
             ),
           ),
@@ -182,7 +182,7 @@ class _RegisterCatState extends State<RegisterCat> {
                   } else {
                     _userEdited = true;
                     setState(() {
-                      _editedAdoptionAd.img = file.path;
+                      _editedCatAd.img = file.path;
                     });
                   }
                 });
@@ -213,7 +213,7 @@ class _RegisterCatState extends State<RegisterCat> {
       },
       validator: _catNameValidator,
       onSaved: (text) {
-        _editedAdoptionAd.catName = text;
+        _editedCatAd.catName = text;
       },
     );
   }
@@ -239,7 +239,7 @@ class _RegisterCatState extends State<RegisterCat> {
       },
       validator: _catAgeValidator,
       onSaved: (text) {
-        _editedAdoptionAd.catAge = text;
+        _editedCatAd.catAge = text;
       },
     );
   }
@@ -267,7 +267,7 @@ class _RegisterCatState extends State<RegisterCat> {
         _userEdited = true;
       },
       onSaved: (text) {
-        _editedAdoptionAd.description = text;
+        _editedCatAd.description = text;
       },
     );
   }
@@ -284,7 +284,7 @@ class _RegisterCatState extends State<RegisterCat> {
             groupValue: _sexo,
             onChanged: (Sexo value) {
               _userEdited = true;
-              _editedAdoptionAd.sex = "Feminino";
+              _editedCatAd.sex = "Feminino";
               setState(() {
                 _sexo = value;
               });
@@ -298,7 +298,7 @@ class _RegisterCatState extends State<RegisterCat> {
             groupValue: _sexo,
             onChanged: (Sexo value) {
               _userEdited = true;
-              _editedAdoptionAd.sex = "Masculino";
+              _editedCatAd.sex = "Masculino";
               setState(() {
                 _sexo = value;
               });
@@ -324,9 +324,9 @@ class _RegisterCatState extends State<RegisterCat> {
               });
               _userEdited = true;
               _castradoChecked
-                  ? _editedAdoptionAd.healthTags.add("Castrado(a)")
-                  : _editedAdoptionAd.healthTags.remove("Castrado(a)");
-              //print("Checkbox castrado:" + _editedAdoptionAd.healthTags.toString());
+                  ? _editedCatAd.healthTags.add("Castrado(a)")
+                  : _editedCatAd.healthTags.remove("Castrado(a)");
+              //print("Checkbox castrado:" + _editedCatAd.healthTags.toString());
             }),
         CheckboxListTile(
             title: Text("Vacinado(a)"),
@@ -338,9 +338,9 @@ class _RegisterCatState extends State<RegisterCat> {
               });
               _userEdited = true;
               _vacinasChecked
-                  ? _editedAdoptionAd.healthTags.add("Vacinado(a)")
-                  : _editedAdoptionAd.healthTags.remove("Vacinado(a)");
-              //print("Checkbox vacinado:" + _editedAdoptionAd.healthTags.toString());
+                  ? _editedCatAd.healthTags.add("Vacinado(a)")
+                  : _editedCatAd.healthTags.remove("Vacinado(a)");
+              //print("Checkbox vacinado:" + _editedCatAd.healthTags.toString());
             }),
       ],
     );

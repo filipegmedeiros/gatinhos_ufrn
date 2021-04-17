@@ -1,9 +1,13 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
-import 'package:gatinhos_mobile/domain/AdoptionAd.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
+
+import 'package:gatinhos_mobile/domain/catAd.dart';
 import 'package:gatinhos_mobile/ui/adoptionRequests.dart';
 import 'package:gatinhos_mobile/ui/login.dart';
 import 'package:gatinhos_mobile/ui/registerCat.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class Home extends StatefulWidget {
   static const String routeName = "/HomePage";
@@ -104,15 +108,32 @@ class _HomeState extends State<Home> {
     );
   }
 
-  void _showRegisterCatPage({AdoptionAd ad}) async {
+  void _showRegisterCatPage({CatAd ad}) async {
     // change to registerCat page
-    AdoptionAd adRet = await Navigator.push(context,
-        MaterialPageRoute(builder: (context) => RegisterCat(adoptionAd: ad)));
+    CatAd adRet = await Navigator.push(context,
+        MaterialPageRoute(builder: (context) => RegisterCat(catAd: ad)));
 
     if (adRet != null) {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String token = prefs.getString('token');
+
       if (adRet.id == null) {
         // salve on database
         print("salvar contato");
+        var url = "http://10.0.2.2:3001/api/v1/gatinho/";
+        final response = await http.post(
+          Uri.parse(url),
+          headers: <String, String>{
+            'x-access-token': token,
+          },
+          body: jsonEncode(<String, String>{
+            'login': "userName",
+            'password': "password",
+          }),
+        );
+
+        print("Resposta do post de criação de ad: ");
+        print(response);
       } else {
         // update database
         print("atualizar contato");
