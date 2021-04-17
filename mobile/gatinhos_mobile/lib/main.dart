@@ -15,7 +15,6 @@ void main() {
     routes: {
       Login.routeName: (context) => Login(),
       Home.routeName: (context) => Home(),
-      RegisterCat.routeName: (context) => RegisterCat(),
     },
   ));
 }

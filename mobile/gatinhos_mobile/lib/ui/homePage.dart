@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gatinhos_mobile/domain/AdoptionAd.dart';
 import 'package:gatinhos_mobile/ui/adoptionRequests.dart';
 import 'package:gatinhos_mobile/ui/login.dart';
 import 'package:gatinhos_mobile/ui/registerCat.dart';
@@ -49,11 +50,10 @@ class _HomeState extends State<Home> {
               },
             ),
             ListTile(
-              leading: Icon(Icons.add_circle),
-              title: Text("Cadastrar"),
+              leading: Icon(Icons.edit),
+              title: Text("Editar"),
               onTap: () {
-                // change to registerCat page
-                Navigator.pushNamed(context, RegisterCat.routeName);
+                _showRegisterCatPage();
               },
             ),
             ListTile(
@@ -91,7 +91,33 @@ class _HomeState extends State<Home> {
           ],
         ),
       ),
-      body: Container(), // TODO: criar pagina com listagem de anúncios
+      body: Container(
+        alignment: Alignment.bottomCenter, // TODO position floating button
+        child: FloatingActionButton(
+          child: Icon(Icons.add),
+          backgroundColor: Color(0xff5600e8),
+          onPressed: () {
+            _showRegisterCatPage();
+          },
+        ),
+      ), // TODO: criar pagina com listagem de anúncios
     );
+  }
+
+  void _showRegisterCatPage({AdoptionAd ad}) async {
+    // change to registerCat page
+    AdoptionAd adRet = await Navigator.push(context,
+        MaterialPageRoute(builder: (context) => RegisterCat(adoptionAd: ad)));
+
+    if (adRet != null) {
+      if (adRet.id == null) {
+        // salve on database
+        print("salvar contato");
+      } else {
+        // update database
+        print("atualizar contato");
+      }
+      // atualizar lista de ads
+    }
   }
 }

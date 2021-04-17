@@ -87,7 +87,9 @@ class _RegisterCatState extends State<RegisterCat> {
       onWillPop: _requestPop,
       child: Scaffold(
         appBar: AppBar(
-          title: Text("Cadastro"),
+          title: Text(_editedAdoptionAd.catName == null
+              ? "Cadastro"
+              : "Editar " + _editedAdoptionAd.catName),
           centerTitle: true,
           backgroundColor: Color(0xff3700b3),
         ),
@@ -129,7 +131,14 @@ class _RegisterCatState extends State<RegisterCat> {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(5)),
                     ),
-                    onPressed: () => {},
+                    onPressed: () {
+                      if (_formKey.currentState.validate()) {
+                        // save form
+                        _formKey.currentState.save();
+
+                        Navigator.pop(context, _editedAdoptionAd);
+                      }
+                    },
                   )
                 ],
               ),
@@ -162,7 +171,7 @@ class _RegisterCatState extends State<RegisterCat> {
             right: 0.0,
             bottom: 0.0,
             child: FloatingActionButton(
-              child: Icon(Icons.add),
+              child: Icon(Icons.add_a_photo_outlined),
               backgroundColor: Color(0xff5600e8),
               onPressed: () {
                 ImagePicker()
@@ -171,9 +180,9 @@ class _RegisterCatState extends State<RegisterCat> {
                   if (file == null) {
                     return;
                   } else {
+                    _userEdited = true;
                     setState(() {
                       _editedAdoptionAd.img = file.path;
-                      //_adoptionAdEdited = true;
                     });
                   }
                 });
@@ -201,6 +210,9 @@ class _RegisterCatState extends State<RegisterCat> {
       controller: nameController,
       onChanged: (text) {
         _userEdited = true;
+      },
+      validator: _catNameValidator,
+      onSaved: (text) {
         _editedAdoptionAd.catName = text;
       },
     );
@@ -224,6 +236,9 @@ class _RegisterCatState extends State<RegisterCat> {
       controller: ageController,
       onChanged: (text) {
         _userEdited = true;
+      },
+      validator: _catAgeValidator,
+      onSaved: (text) {
         _editedAdoptionAd.catAge = text;
       },
     );
@@ -250,6 +265,8 @@ class _RegisterCatState extends State<RegisterCat> {
       controller: descriptionController,
       onChanged: (text) {
         _userEdited = true;
+      },
+      onSaved: (text) {
         _editedAdoptionAd.description = text;
       },
     );
@@ -327,5 +344,26 @@ class _RegisterCatState extends State<RegisterCat> {
             }),
       ],
     );
+  }
+
+  /// Field validators
+  String _catNameValidator(String value) {
+    if (value == null || value.isEmpty) {
+      return "Por favor, insira o nome do gato.";
+    }
+    return null;
+  }
+
+  String _catAgeValidator(String value) {
+    if (value == null || value.isEmpty) {
+      return null;
+    }
+
+    int age = int.tryParse(value);
+    if (age == null || 0 > age || age > 40) {
+      return "Idade inválida.";
+    }
+
+    return null;
   }
 }
