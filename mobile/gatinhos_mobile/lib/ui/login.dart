@@ -199,9 +199,9 @@ class _LoginState extends State<Login> {
 
   /// server authentication
   _signIn(String userName, String password) async {
-    var url = 'http://10.0.2.2:3001/auth/sign_in';
+    var url = "http://10.0.2.2:3001/auth/sign_in";
     final response = await http.post(
-      url,
+      Uri.parse(url),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },

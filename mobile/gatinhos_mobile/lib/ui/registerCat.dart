@@ -1,14 +1,28 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:gatinhos_mobile/domain/AdoptionAd.dart';
+import 'package:image_picker/image_picker.dart';
 
 enum Sexo { Feminino, Masculino }
 
 class RegisterCat extends StatefulWidget {
   static const routeName = '/RegisterCat';
+
+  AdoptionAd adoptionAd;
+
+  // Constructor that initialize the AdoptionAd
+  // Between braces because it is optional
+  RegisterCat({this.adoptionAd});
+
   @override
   _RegisterCatState createState() => _RegisterCatState();
 }
 
 class _RegisterCatState extends State<RegisterCat> {
+  AdoptionAd _editedAdoptionAd;
+  bool _userEdited = false;
+
   // input textfield controllers
   TextEditingController nameController = TextEditingController();
   TextEditingController ageController = TextEditingController();
@@ -24,17 +38,63 @@ class _RegisterCatState extends State<RegisterCat> {
   GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
 
   @override
+  void initState() {
+    super.initState();
+
+    // acessando o ad definido no widget(registerCat)
+    if (widget.adoptionAd == null) {
+      _editedAdoptionAd = AdoptionAd();
+    } else {
+      _editedAdoptionAd = widget.adoptionAd; // TODO check
+      nameController.text = _editedAdoptionAd.catName;
+      ageController.text = _editedAdoptionAd.catAge;
+      descriptionController.text = _editedAdoptionAd.description;
+    }
+  }
+
+  Future<bool> _requestPop() {
+    if (_userEdited) {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: Text("Abandonar alterações?"),
+              content: Text("Os dados inseridos serão perdidos."),
+              actions: <Widget>[
+                TextButton(
+                    child: Text("Cancelar"),
+                    onPressed: () {
+                      Navigator.pop(context); // pop warning
+                    }),
+                TextButton(
+                    child: Text("Sim"),
+                    onPressed: () {
+                      Navigator.pop(context); // pop warning
+                      Navigator.pop(context); // pop registerCat page
+                    }),
+              ],
+            );
+          });
+    } else {
+      return Future.value(true);
+    }
+    return Future.value(false);
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return WillPopScope(
+      onWillPop: _requestPop,
+      child: Scaffold(
         appBar: AppBar(
           title: Text("Cadastro"),
           centerTitle: true,
           backgroundColor: Color(0xff3700b3),
         ),
         body: Container(
-            child: SingleChildScrollView(
-          padding: EdgeInsets.fromLTRB(15, 30, 15, 0),
-          child: Form(
+          child: SingleChildScrollView(
+            padding: EdgeInsets.fromLTRB(15, 30, 15, 0),
+            child: Form(
               key: _formKey,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -72,13 +132,55 @@ class _RegisterCatState extends State<RegisterCat> {
                     onPressed: () => {},
                   )
                 ],
-              )),
-        )));
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
   }
 
   // inputs Widget
   _inputImage() {
-    return Container();
+    // floating action button; Icons.add
+    return Stack(
+      children: <Widget>[
+        Container(
+          width: 400.0,
+          height: 150,
+          decoration: BoxDecoration(
+            shape: BoxShape.rectangle,
+            image: DecorationImage(
+              fit: BoxFit.contain,
+              image: _editedAdoptionAd.img != null
+                  ? FileImage(File(_editedAdoptionAd.img))
+                  : AssetImage("images/defaultCat.jpg"),
+            ),
+          ),
+        ),
+        Positioned(
+            right: 0.0,
+            bottom: 0.0,
+            child: FloatingActionButton(
+              child: Icon(Icons.add),
+              backgroundColor: Color(0xff5600e8),
+              onPressed: () {
+                ImagePicker()
+                    .getImage(source: ImageSource.gallery, imageQuality: 50)
+                    .then((file) {
+                  if (file == null) {
+                    return;
+                  } else {
+                    setState(() {
+                      _editedAdoptionAd.img = file.path;
+                      //_adoptionAdEdited = true;
+                    });
+                  }
+                });
+              },
+            ))
+      ],
+    );
   }
 
   _inputName() {
@@ -97,12 +199,16 @@ class _RegisterCatState extends State<RegisterCat> {
         fontSize: 20,
       ),
       controller: nameController,
+      onChanged: (text) {
+        _userEdited = true;
+        _editedAdoptionAd.catName = text;
+      },
     );
   }
 
   _inputAge() {
     return TextFormField(
-      keyboardType: TextInputType.name,
+      keyboardType: TextInputType.number,
       decoration: InputDecoration(
         labelText: "Idade",
         labelStyle: TextStyle(color: Colors.grey[700], fontSize: 18),
@@ -116,12 +222,16 @@ class _RegisterCatState extends State<RegisterCat> {
         fontSize: 20,
       ),
       controller: ageController,
+      onChanged: (text) {
+        _userEdited = true;
+        _editedAdoptionAd.catAge = text;
+      },
     );
   }
 
   _inputDescription() {
     return TextFormField(
-      keyboardType: TextInputType.name,
+      keyboardType: TextInputType.multiline,
       decoration: InputDecoration(
         labelText: "Descrição",
         labelStyle: TextStyle(color: Colors.grey[700], fontSize: 18),
@@ -138,6 +248,10 @@ class _RegisterCatState extends State<RegisterCat> {
       minLines: 4,
       maxLines: 8,
       controller: descriptionController,
+      onChanged: (text) {
+        _userEdited = true;
+        _editedAdoptionAd.description = text;
+      },
     );
   }
 
@@ -152,6 +266,8 @@ class _RegisterCatState extends State<RegisterCat> {
             value: Sexo.Feminino,
             groupValue: _sexo,
             onChanged: (Sexo value) {
+              _userEdited = true;
+              _editedAdoptionAd.sex = "Feminino";
               setState(() {
                 _sexo = value;
               });
@@ -164,6 +280,8 @@ class _RegisterCatState extends State<RegisterCat> {
             value: Sexo.Masculino,
             groupValue: _sexo,
             onChanged: (Sexo value) {
+              _userEdited = true;
+              _editedAdoptionAd.sex = "Masculino";
               setState(() {
                 _sexo = value;
               });
@@ -187,6 +305,11 @@ class _RegisterCatState extends State<RegisterCat> {
               setState(() {
                 _castradoChecked = value;
               });
+              _userEdited = true;
+              _castradoChecked
+                  ? _editedAdoptionAd.healthTags.add("Castrado(a)")
+                  : _editedAdoptionAd.healthTags.remove("Castrado(a)");
+              //print("Checkbox castrado:" + _editedAdoptionAd.healthTags.toString());
             }),
         CheckboxListTile(
             title: Text("Vacinado(a)"),
@@ -196,6 +319,11 @@ class _RegisterCatState extends State<RegisterCat> {
               setState(() {
                 _vacinasChecked = value;
               });
+              _userEdited = true;
+              _vacinasChecked
+                  ? _editedAdoptionAd.healthTags.add("Vacinado(a)")
+                  : _editedAdoptionAd.healthTags.remove("Vacinado(a)");
+              //print("Checkbox vacinado:" + _editedAdoptionAd.healthTags.toString());
             }),
       ],
     );

@@ -35,10 +35,12 @@ dependencies:
   #google_fonts: ^2.0.0
 
   # to connect with database
-  http: 0.12.1
+  http: 0.13.0
 
   # persistency storage for simple data (used for token persistency)
   shared_preferences: ^2.0.5
+
+  image_picker: ^0.7.4
 
 dev_dependencies:
   flutter_test:
@@ -60,7 +62,7 @@ flutter:
     - images/LogoGatinhos.png
     - images/cat1.jpg
     - images/cat2.jpg
-  #   - images/a_dot_ham.jpeg
+    - images/defaultCat.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
