@@ -17,6 +17,21 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  List<CatAd> catAdoptionAds = List.empty(growable: true);
+
+  @override
+  void initState() {
+    super.initState();
+    // update cat adoption ad list
+    updateAdList();
+  }
+
+  void updateAdList() {
+    // TODO get adList from database
+    catAdoptionAds.add(CatAd());
+    catAdoptionAds.add(CatAd());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,85 +41,21 @@ class _HomeState extends State<Home> {
         centerTitle: true,
         backgroundColor: Color(0xff3700b3),
       ),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            Container(
-              height: 110,
-              child: DrawerHeader(
-                decoration: BoxDecoration(
-                  color: Color(0xff3700b3),
-                ),
-                child: Text(
-                  "Menu",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 24,
-                  ),
-                ),
-              ),
-            ),
-            ListTile(
-              leading: Icon(Icons.home),
-              title: Text("Home"),
-              onTap: () {
-                // change app to home page
-                Navigator.pushNamed(context, Home.routeName);
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.edit),
-              title: Text("Editar"),
-              onTap: () {
-                _showRegisterCatPage();
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.read_more),
-              title: Text("Pedidos de adoção"),
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => AdoptionRequests()));
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.login),
-              title: Text("Login"),
-              onTap: () {
-                // change to login page
-                Navigator.pushNamed(context, Login.routeName);
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.logout),
-              title: Text("Logout"),
-              onTap: () async {
-                // logout
-                SharedPreferences prefs = await SharedPreferences.getInstance();
-                prefs.clear();
-                prefs
-                    .commit(); // On iOS, synchronize is marked deprecated. On Android, we commit every set.
-
-                // go to home
-                Navigator.pushNamed(context, Home.routeName);
-              },
-            ),
-          ],
-        ),
+      drawer: _homeDrawer(),
+      floatingActionButton: FloatingActionButton(
+        // TODO position
+        child: Icon(Icons.add),
+        backgroundColor: Color(0xff5600e8),
+        onPressed: () {
+          _showRegisterCatPage();
+        },
       ),
-      body: Container(
-        alignment: Alignment.bottomCenter, // TODO position floating button
-        child: FloatingActionButton(
-          child: Icon(Icons.add),
-          backgroundColor: Color(0xff5600e8),
-          onPressed: () {
-            _showRegisterCatPage();
-          },
-        ),
-      ), // TODO: criar pagina com listagem de anúncios
+      body: ListView.builder(
+          padding: EdgeInsets.all(5.0),
+          itemCount: catAdoptionAds.length,
+          itemBuilder: (context, index) {
+            return _catAdCard(context, index);
+          }),
     );
   }
 
@@ -117,6 +68,7 @@ class _HomeState extends State<Home> {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String token = prefs.getString('token');
       print("token lido para acesso ao cadastro: " + token);
+
       if (adRet.id == null) {
         // salve on database
         print("salvar contato");
@@ -148,5 +100,94 @@ class _HomeState extends State<Home> {
       }
       // atualizar lista de ads
     }
+  }
+
+  // Widget
+  _homeDrawer() {
+    return Drawer(
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: <Widget>[
+          Container(
+            height: 110,
+            child: DrawerHeader(
+              decoration: BoxDecoration(
+                color: Color(0xff3700b3),
+              ),
+              child: Text(
+                "Menu",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                ),
+              ),
+            ),
+          ),
+          ListTile(
+            leading: Icon(Icons.home),
+            title: Text("Home"),
+            onTap: () {
+              // change app to home page
+              Navigator.pushNamed(context, Home.routeName);
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.edit),
+            title: Text("Editar"),
+            onTap: () {
+              _showRegisterCatPage();
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.read_more),
+            title: Text("Pedidos de adoção"),
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => AdoptionRequests()));
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.login),
+            title: Text("Login"),
+            onTap: () {
+              // change to login page
+              Navigator.pushNamed(context, Login.routeName);
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.logout),
+            title: Text("Logout"),
+            onTap: () async {
+              // logout
+              SharedPreferences prefs = await SharedPreferences.getInstance();
+              prefs.clear();
+              prefs
+                  .commit(); // On iOS, synchronize is marked deprecated. On Android, we commit every set.
+
+              // go to home
+              Navigator.pushNamed(context, Home.routeName);
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _catAdCard(BuildContext context, int index) {
+    return Card(
+      elevation: 2,
+      child: InkWell(
+        splashColor: Colors.blue.withAlpha(30),
+        onTap: () {
+          // TODO open cat ad page
+          print("cat ad tapped.");
+        },
+        child: const SizedBox(
+          width: 300,
+          height: 100,
+          child: Text("cat Ad"), // TODO put ad info
+        ),
+      ),
+    );
   }
 }
