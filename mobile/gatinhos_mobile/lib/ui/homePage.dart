@@ -28,10 +28,15 @@ class _HomeState extends State<Home> {
 
   Future<void> updateAdList() async {
     // TODO get adList from database
-    catAdoptionAds.add(CatAd());
-    catAdoptionAds.add(CatAd());
+    catAdoptionAds.add(
+        CatAd(catName: "Sissa", description: "Gata branca.", sex: "Feminino"));
+    catAdoptionAds.add(CatAd(
+        catName: "Lola",
+        description: "Viralata de Siamês. Muito dócil e brincalhona.",
+        sex: "Feminino",
+        healthTags: ["Castrado(a)", "Vacinado(a)"]));
 
-    var url = "http://localhost:3001/api/v1/gatinho/";
+    var url = "http://localhost:3001/api/v1/gatinhos/";
     final adList = await http.get(Uri.parse(url));
 
     print("Resposta do post de criação de ad: ");
@@ -73,30 +78,32 @@ class _HomeState extends State<Home> {
     if (adRet != null) {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String token = prefs.getString('token');
-      print("token lido para acesso ao cadastro: " + token);
 
       if (adRet.id == null) {
         // salve on database
         print("salvar contato");
-        //var url = "http://10.0.2.2:3001/api/v1/gatinho/";
-        var url = "http://localhost:3001/api/v1/gatinho/";
+
+        //var url = "http://10.0.2.2:3001/api/v1/gatinhos/";
+        print("retorno: " + adRet.description);
+        var url = "http://localhost:3001/api/v1/gatinhos/";
         final response = await http.post(
           Uri.parse(url),
           headers: <String, String>{
             'x-access-token': token,
+            'Content-Type': 'application/json; charset=UTF-8',
           },
           body: jsonEncode(<String, String>{
             'name': adRet.catName,
             'description': adRet.description,
-            //'rescueDate': "2021-05-17T16:57:48.073+00:00", // TODO
+            'rescueDate': "2021-05-17T16:57:48.073+00:00", // TODO
             'gender': adRet.sex,
             'vaccines': adRet.healthTags.contains("Vacinado(a)").toString(),
             'castrate': adRet.healthTags.contains("Castrado(a)").toString(),
           }),
         );
 
-        print("Resposta do post de criação de ad: ");
-        print(response.body);
+        //print("Resposta do post de criação de ad: ");
+        //print(response.body);
 
         // TODO 'image': adRet.img, enviar imagem por multipart
 
