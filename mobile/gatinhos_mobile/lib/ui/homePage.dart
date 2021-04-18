@@ -116,24 +116,32 @@ class _HomeState extends State<Home> {
     if (adRet != null) {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String token = prefs.getString('token');
-
+      print("token lido para acesso ao cadastro: " + token);
       if (adRet.id == null) {
         // salve on database
         print("salvar contato");
-        var url = "http://10.0.2.2:3001/api/v1/gatinho/";
+        //var url = "http://10.0.2.2:3001/api/v1/gatinho/";
+        var url = "http://localhost:3001/api/v1/gatinho/";
         final response = await http.post(
           Uri.parse(url),
           headers: <String, String>{
             'x-access-token': token,
           },
           body: jsonEncode(<String, String>{
-            'login': "userName",
-            'password': "password",
+            'name': adRet.catName,
+            'description': adRet.description,
+            //'rescueDate': "2021-05-17T16:57:48.073+00:00", // TODO
+            'gender': adRet.sex,
+            'vaccines': adRet.healthTags.contains("Vacinado(a)").toString(),
+            'castrate': adRet.healthTags.contains("Castrado(a)").toString(),
           }),
         );
 
         print("Resposta do post de criação de ad: ");
-        print(response);
+        print(response.body);
+
+        //'image': adRet.img, enviar imagem por multipart
+
       } else {
         // update database
         print("atualizar contato");

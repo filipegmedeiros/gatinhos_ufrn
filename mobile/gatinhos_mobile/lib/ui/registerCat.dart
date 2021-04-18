@@ -25,7 +25,7 @@ class _RegisterCatState extends State<RegisterCat> {
 
   // input textfield controllers
   TextEditingController nameController = TextEditingController();
-  TextEditingController ageController = TextEditingController();
+  TextEditingController rescueDateController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
 
   // radio button option
@@ -47,7 +47,7 @@ class _RegisterCatState extends State<RegisterCat> {
     } else {
       _editedCatAd = widget.catAd; // TODO check
       nameController.text = _editedCatAd.catName;
-      ageController.text = _editedCatAd.catAge;
+      rescueDateController.text = _editedCatAd.catAge;
       descriptionController.text = _editedCatAd.description;
     }
   }
@@ -110,7 +110,7 @@ class _RegisterCatState extends State<RegisterCat> {
                       SizedBox(
                         width: 15.0,
                       ),
-                      Flexible(child: _inputAge())
+                      Flexible(child: _inputRescueDate())
                     ],
                   ),
                   Divider(),
@@ -211,18 +211,17 @@ class _RegisterCatState extends State<RegisterCat> {
       onChanged: (text) {
         _userEdited = true;
       },
-      validator: _catNameValidator,
       onSaved: (text) {
         _editedCatAd.catName = text;
       },
     );
   }
 
-  _inputAge() {
+  _inputRescueDate() {
     return TextFormField(
-      keyboardType: TextInputType.number,
+      keyboardType: TextInputType.datetime,
       decoration: InputDecoration(
-        labelText: "Idade",
+        labelText: "Data do resgate",
         labelStyle: TextStyle(color: Colors.grey[700], fontSize: 18),
         border: const UnderlineInputBorder(),
         filled: true,
@@ -233,11 +232,11 @@ class _RegisterCatState extends State<RegisterCat> {
         color: Colors.black,
         fontSize: 20,
       ),
-      controller: ageController,
+      controller: rescueDateController,
       onChanged: (text) {
         _userEdited = true;
       },
-      validator: _catAgeValidator,
+      validator: _rescueDateValidator,
       onSaved: (text) {
         _editedCatAd.catAge = text;
       },
@@ -266,6 +265,7 @@ class _RegisterCatState extends State<RegisterCat> {
       onChanged: (text) {
         _userEdited = true;
       },
+      validator: _descriptionValidator,
       onSaved: (text) {
         _editedCatAd.description = text;
       },
@@ -347,23 +347,23 @@ class _RegisterCatState extends State<RegisterCat> {
   }
 
   /// Field validators
-  String _catNameValidator(String value) {
+  String _descriptionValidator(String value) {
     if (value == null || value.isEmpty) {
-      return "Por favor, insira o nome do gato.";
+      return "Por favor, insira uma descrição do gato.";
     }
     return null;
   }
 
-  String _catAgeValidator(String value) {
+  String _rescueDateValidator(String value) {
     if (value == null || value.isEmpty) {
-      return null;
+      return "Por favor, insira a data do resgate.";
     }
-
+/*
     int age = int.tryParse(value);
     if (age == null || 0 > age || age > 40) {
       return "Idade inválida.";
     }
-
+*/
     return null;
   }
 }
