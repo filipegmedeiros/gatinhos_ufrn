@@ -26,10 +26,16 @@ class _HomeState extends State<Home> {
     updateAdList();
   }
 
-  void updateAdList() {
+  Future<void> updateAdList() async {
     // TODO get adList from database
     catAdoptionAds.add(CatAd());
     catAdoptionAds.add(CatAd());
+
+    var url = "http://localhost:3001/api/v1/gatinho/";
+    final adList = await http.get(Uri.parse(url));
+
+    print("Resposta do post de criação de ad: ");
+    print(adList.body);
   }
 
   @override
@@ -92,7 +98,7 @@ class _HomeState extends State<Home> {
         print("Resposta do post de criação de ad: ");
         print(response.body);
 
-        //'image': adRet.img, enviar imagem por multipart
+        // TODO 'image': adRet.img, enviar imagem por multipart
 
       } else {
         // update database
