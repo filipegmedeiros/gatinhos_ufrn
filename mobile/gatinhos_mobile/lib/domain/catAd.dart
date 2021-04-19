@@ -1,19 +1,19 @@
 class CatAd {
-  int id;
+  String id;
   String img; // image path
   String catName;
-  String catAge;
+  String rescueDate;
   String description;
-  String sex;
+  String gender;
   List<String> healthTags;
 
   CatAd(
       {this.id,
       this.img,
       this.catName,
-      this.catAge,
+      this.rescueDate,
       this.description,
-      this.sex,
+      this.gender,
       this.healthTags}) {
     // ensure list was initialized
     if (this.healthTags == null) {
@@ -21,8 +21,27 @@ class CatAd {
     }
   }
 
+  factory CatAd.fromJson(Map<String, dynamic> parsedJson) {
+    CatAd adRet = CatAd(
+      id: parsedJson['id'].toString(),
+      catName: parsedJson['name'].toString(),
+      rescueDate: parsedJson['rescueDate'].toString(),
+      description: parsedJson['description'].toString(),
+      gender: parsedJson['gender'].toString(),
+    );
+
+    if (parsedJson['vaccines'].toString() == "true") {
+      adRet.healthTags.add("Vacinado(a)");
+    }
+
+    if (parsedJson['castrate'].toString() == "false") {
+      adRet.healthTags.add("Castrado(a)");
+    }
+    return adRet;
+  }
+
   @override
   String toString() {
-    return "Contact(id: ${id}, img: ${img}, name: ${catName}, email: ${catAge}, phone: ${description}, sex: ${sex}, healthTags: ${healthTags.toString()}))";
+    return "Contact(id: ${id}, img: ${img}, name: ${catName}, email: ${rescueDate}, phone: ${description}, sex: ${gender}, healthTags: ${healthTags.toString()}))";
   }
 }

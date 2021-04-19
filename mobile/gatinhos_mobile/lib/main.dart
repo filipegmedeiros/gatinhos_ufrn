@@ -9,6 +9,7 @@ void main() {
     title: "Gatinhos UFRN",
     home: Home(),
     theme: ThemeData(
+      fontFamily: 'Roboto',
       hintColor: Color(0xff3700b3),
       primaryColor: Color(0xff3700b3),
     ),

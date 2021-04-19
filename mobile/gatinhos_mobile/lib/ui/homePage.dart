@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -27,20 +28,12 @@ class _HomeState extends State<Home> {
   }
 
   Future<void> updateAdList() async {
-    // TODO get adList from database
-    catAdoptionAds.add(
-        CatAd(catName: "Sissa", description: "Gata branca.", sex: "Feminino"));
-    catAdoptionAds.add(CatAd(
-        catName: "Lola",
-        description: "Viralata de Siamês. Muito dócil e brincalhona.",
-        sex: "Feminino",
-        healthTags: ["Castrado(a)", "Vacinado(a)"]));
-
     var url = "http://localhost:3001/api/v1/gatinhos/";
     final adList = await http.get(Uri.parse(url));
 
-    print("Resposta do post de criação de ad: ");
-    print(adList.body);
+    var jsonList = jsonDecode(adList.body);
+    catAdoptionAds =
+        (jsonList as List).map((data) => new CatAd.fromJson(data)).toList();
   }
 
   @override
@@ -62,7 +55,7 @@ class _HomeState extends State<Home> {
         },
       ),
       body: ListView.builder(
-          padding: EdgeInsets.all(5.0),
+          padding: EdgeInsets.all(15.0),
           itemCount: catAdoptionAds.length,
           itemBuilder: (context, index) {
             return _catAdCard(context, index);
@@ -96,7 +89,7 @@ class _HomeState extends State<Home> {
             'name': adRet.catName,
             'description': adRet.description,
             'rescueDate': "2021-05-17T16:57:48.073+00:00", // TODO
-            'gender': adRet.sex,
+            'gender': adRet.gender,
             'vaccines': adRet.healthTags.contains("Vacinado(a)").toString(),
             'castrate': adRet.healthTags.contains("Castrado(a)").toString(),
           }),
@@ -145,13 +138,6 @@ class _HomeState extends State<Home> {
             },
           ),
           ListTile(
-            leading: Icon(Icons.edit),
-            title: Text("Editar"),
-            onTap: () {
-              _showRegisterCatPage();
-            },
-          ),
-          ListTile(
             leading: Icon(Icons.read_more),
             title: Text("Pedidos de adoção"),
             onTap: () {
@@ -187,20 +173,145 @@ class _HomeState extends State<Home> {
   }
 
   Widget _catAdCard(BuildContext context, int index) {
-    return Card(
-      elevation: 2,
-      child: InkWell(
-        splashColor: Colors.blue.withAlpha(30),
-        onTap: () {
-          // TODO open cat ad page
-          print("cat ad tapped.");
-        },
-        child: const SizedBox(
-          width: 300,
-          height: 100,
-          child: Text("cat Ad"), // TODO put ad info
+    return Padding(
+      padding: EdgeInsets.all(10),
+      child: Card(
+        elevation: 2,
+        child: InkWell(
+          splashColor: Colors.blue.withAlpha(30),
+          onTap: () {
+            // TODO open cat ad page
+            print("cat ad tapped.");
+          },
+          child: Column(
+            children: <Widget>[
+              ListTile(
+                title: Text(
+                  catAdoptionAds.elementAt(index).catName,
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                subtitle: Text(
+                  catAdoptionAds.elementAt(index).gender,
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+                trailing: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    IconButton(
+                      icon: Icon(Icons.edit),
+                      onPressed: () {
+                        _showRegisterCatPage(
+                            ad: catAdoptionAds.elementAt(index));
+                      },
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.delete),
+                      onPressed: () {
+                        // TODO
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Expanded(
+                    child: Container(
+                      width: 120,
+                      height: 200,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          fit: BoxFit.fitWidth,
+                          alignment: Alignment.center,
+                          image: AssetImage("images/cat2.jpg"),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Padding(
+                padding: EdgeInsets.all(10),
+                child: Row(
+                  children: <Widget>[
+                    Text(
+                      catAdoptionAds.elementAt(index).description.substring(
+                          0,
+                          min(
+                              catAdoptionAds
+                                  .elementAt(index)
+                                  .description
+                                  .length,
+                              200)),
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.grey[800],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  _tag(
+                      catAdoptionAds
+                          .elementAt(index)
+                          .healthTags
+                          .contains("Castrado(a)"),
+                      "Castrado(a)"),
+                  _tag(
+                      catAdoptionAds
+                          .elementAt(index)
+                          .healthTags
+                          .contains("Vacinado(a)"),
+                      "Vacinado(a)"),
+                  TextButton(
+                    onPressed: () {
+                      // TODO
+                    },
+                    child: Text(
+                      "VER MAIS",
+                      style: TextStyle(color: Color(0xff751ff0)),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
+  }
+
+  _tag(bool containsTag, String tagLabel) {
+    if (containsTag) {
+      return Padding(
+        padding: EdgeInsets.all(10),
+        child: Container(
+          decoration: BoxDecoration(
+            shape: BoxShape.rectangle,
+            borderRadius: BorderRadius.all(Radius.circular(15.0)),
+            color: Color(0xffe0f0f0),
+          ),
+          child: Padding(
+            padding: EdgeInsets.fromLTRB(16.0, 6.0, 16.0, 6.0),
+            child: Text(
+              tagLabel,
+              style: TextStyle(fontSize: 14),
+            ),
+          ),
+        ),
+      );
+    }
+    return Container();
   }
 }

@@ -29,7 +29,7 @@ class _RegisterCatState extends State<RegisterCat> {
   TextEditingController descriptionController = TextEditingController();
 
   // radio button option
-  Sexo _sexo = Sexo.Feminino;
+  Sexo _gender = Sexo.Feminino;
 
   // checkbox options
   bool _castradoChecked = false;
@@ -47,7 +47,7 @@ class _RegisterCatState extends State<RegisterCat> {
     } else {
       _editedCatAd = widget.catAd; // TODO check
       nameController.text = _editedCatAd.catName;
-      rescueDateController.text = _editedCatAd.catAge;
+      rescueDateController.text = _editedCatAd.rescueDate;
       descriptionController.text = _editedCatAd.description;
     }
   }
@@ -238,7 +238,7 @@ class _RegisterCatState extends State<RegisterCat> {
       },
       validator: _rescueDateValidator,
       onSaved: (text) {
-        _editedCatAd.catAge = text;
+        _editedCatAd.rescueDate = text;
       },
     );
   }
@@ -281,12 +281,12 @@ class _RegisterCatState extends State<RegisterCat> {
           title: const Text("Feminino"),
           leading: Radio<Sexo>(
             value: Sexo.Feminino,
-            groupValue: _sexo,
+            groupValue: _gender,
             onChanged: (Sexo value) {
               _userEdited = true;
-              _editedCatAd.sex = "Feminino";
+              _editedCatAd.gender = "Feminino";
               setState(() {
-                _sexo = value;
+                _gender = value;
               });
             },
           ),
@@ -295,12 +295,12 @@ class _RegisterCatState extends State<RegisterCat> {
           title: const Text("Masculino"),
           leading: Radio<Sexo>(
             value: Sexo.Masculino,
-            groupValue: _sexo,
+            groupValue: _gender,
             onChanged: (Sexo value) {
               _userEdited = true;
-              _editedCatAd.sex = "Masculino";
+              _editedCatAd.gender = "Masculino";
               setState(() {
-                _sexo = value;
+                _gender = value;
               });
             },
           ),
