@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:gatinhos_mobile/ui/catDetail.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
@@ -76,6 +77,14 @@ class _HomeState extends State<Home> {
               onTap: () {
                 // change to login page
                 Navigator.pushNamed(context, Login.routeName);
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.read_more),
+              title: Text("Detalhe (teste)"),
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => CatDetail()));
               },
             ),
             ListTile(
