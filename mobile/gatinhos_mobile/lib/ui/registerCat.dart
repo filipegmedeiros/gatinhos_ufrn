@@ -277,33 +277,31 @@ class _RegisterCatState extends State<RegisterCat> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text("Sexo"),
-        ListTile(
+        RadioListTile(
           title: const Text("Feminino"),
-          leading: Radio<Sexo>(
-            value: Sexo.Feminino,
-            groupValue: _gender,
-            onChanged: (Sexo value) {
-              _userEdited = true;
-              _editedCatAd.gender = "Feminino";
-              setState(() {
-                _gender = value;
-              });
-            },
-          ),
+          value: Sexo.Feminino,
+          groupValue: _gender,
+          onChanged: (Sexo value) {
+            _userEdited = true;
+            _editedCatAd.gender = "Feminino";
+            setState(() {
+              _gender = value;
+            });
+          },
+          contentPadding: EdgeInsets.zero,
         ),
-        ListTile(
+        RadioListTile(
           title: const Text("Masculino"),
-          leading: Radio<Sexo>(
-            value: Sexo.Masculino,
-            groupValue: _gender,
-            onChanged: (Sexo value) {
-              _userEdited = true;
-              _editedCatAd.gender = "Masculino";
-              setState(() {
-                _gender = value;
-              });
-            },
-          ),
+          value: Sexo.Masculino,
+          groupValue: _gender,
+          onChanged: (Sexo value) {
+            _userEdited = true;
+            _editedCatAd.gender = "Masculino";
+            setState(() {
+              _gender = value;
+            });
+          },
+          contentPadding: EdgeInsets.zero,
         ),
       ],
     );
@@ -315,33 +313,35 @@ class _RegisterCatState extends State<RegisterCat> {
       children: <Widget>[
         Text("Saúde"),
         CheckboxListTile(
-            title: Text("Castrado(a)"),
-            controlAffinity: ListTileControlAffinity.leading,
-            value: _castradoChecked,
-            onChanged: (bool value) {
-              setState(() {
-                _castradoChecked = value;
-              });
-              _userEdited = true;
-              _castradoChecked
-                  ? _editedCatAd.healthTags.add("Castrado(a)")
-                  : _editedCatAd.healthTags.remove("Castrado(a)");
-              //print("Checkbox castrado:" + _editedCatAd.healthTags.toString());
-            }),
+          title: Text("Castrado(a)"),
+          controlAffinity: ListTileControlAffinity.leading,
+          value: _castradoChecked,
+          onChanged: (bool value) {
+            setState(() {
+              _castradoChecked = value;
+            });
+            _userEdited = true;
+            _castradoChecked
+                ? _editedCatAd.healthTags.add("Castrado(a)")
+                : _editedCatAd.healthTags.remove("Castrado(a)");
+          },
+          contentPadding: EdgeInsets.zero,
+        ),
         CheckboxListTile(
-            title: Text("Vacinado(a)"),
-            controlAffinity: ListTileControlAffinity.leading,
-            value: _vacinasChecked,
-            onChanged: (bool value) {
-              setState(() {
-                _vacinasChecked = value;
-              });
-              _userEdited = true;
-              _vacinasChecked
-                  ? _editedCatAd.healthTags.add("Vacinado(a)")
-                  : _editedCatAd.healthTags.remove("Vacinado(a)");
-              //print("Checkbox vacinado:" + _editedCatAd.healthTags.toString());
-            }),
+          title: Text("Vacinado(a)"),
+          controlAffinity: ListTileControlAffinity.leading,
+          value: _vacinasChecked,
+          onChanged: (bool value) {
+            setState(() {
+              _vacinasChecked = value;
+            });
+            _userEdited = true;
+            _vacinasChecked
+                ? _editedCatAd.healthTags.add("Vacinado(a)")
+                : _editedCatAd.healthTags.remove("Vacinado(a)");
+          },
+          contentPadding: EdgeInsets.all(0),
+        ),
       ],
     );
   }
