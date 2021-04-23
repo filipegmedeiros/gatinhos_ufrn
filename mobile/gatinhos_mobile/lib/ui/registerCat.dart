@@ -50,7 +50,7 @@ class _RegisterCatState extends State<RegisterCat> {
       _editedCatAd = CatAd();
       _editedCatAd.gender = "Feminino";
     } else {
-      _editedCatAd = widget.catAd; // TODO check
+      _editedCatAd = widget.catAd;
       nameController.text = _editedCatAd.catName;
       var date =
           "${_editedCatAd.rescueDate.toLocal().day}/${_editedCatAd.rescueDate.toLocal().month}/${_editedCatAd.rescueDate.toLocal().year}";
@@ -60,6 +60,7 @@ class _RegisterCatState extends State<RegisterCat> {
           _editedCatAd.gender == "Feminino" ? Sexo.Feminino : Sexo.Masculino;
       _castradoChecked = _editedCatAd.healthTags.contains("Castrado(a)");
       _vacinasChecked = _editedCatAd.healthTags.contains("Vacinado(a)");
+      print("id reg: " + widget.catAd.id);
     }
   }
 

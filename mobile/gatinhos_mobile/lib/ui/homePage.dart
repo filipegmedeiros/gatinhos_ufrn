@@ -34,6 +34,8 @@ class _HomeState extends State<Home> {
     var jsonList = jsonDecode(adList.body);
     catAdoptionAds =
         (jsonList as List).map((data) => new CatAd.fromJson(data)).toList();
+
+    print("id last: " + catAdoptionAds.last.id);
   }
 
   @override
@@ -72,37 +74,57 @@ class _HomeState extends State<Home> {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String token = prefs.getString('token');
 
+      var url;
       if (adRet.id == null) {
         // salve on database
         //var url = "http://10.0.2.2:3001/api/v1/gatinhos/";
-        var url = "http://localhost:3001/api/v1/gatinhos/";
-        final response = await http.post(
-          Uri.parse(url),
-          headers: <String, String>{
-            'x-access-token': token,
-            'Content-Type': 'application/json; charset=UTF-8',
-          },
-          body: jsonEncode(<String, String>{
-            'name': adRet.catName,
-            'description': adRet.description,
-            'rescueDate': adRet.rescueDate.toString(),
-            'gender': adRet.gender,
-            'vaccines': adRet.healthTags.contains("Vacinado(a)").toString(),
-            'castrate': adRet.healthTags.contains("Castrado(a)").toString(),
-          }),
-        );
-
-        //print("Resposta do post de criação de ad: ");
-        //print(response.body);
-
-        // TODO 'image': adRet.img, enviar imagem por multipart
-
+        url = "http://localhost:3001/api/v1/gatinhos/";
       } else {
         // update database
-        print("atualizar contato");
+        url = "http://localhost:3001/api/v1/gatinhos/" + adRet.id;
       }
+
+      final response = await http.post(
+        Uri.parse(url),
+        headers: <String, String>{
+          'x-access-token': token,
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{
+          'name': adRet.catName,
+          'description': adRet.description,
+          'rescueDate': adRet.rescueDate.toString(),
+          'gender': adRet.gender,
+          'vaccines': adRet.healthTags.contains("Vacinado(a)").toString(),
+          'castrate': adRet.healthTags.contains("Castrado(a)").toString(),
+        }),
+      );
+
+      //print("Resposta do post de criação de ad: ");
+      //print(response.body);
+
+      // TODO 'image': adRet.img, enviar imagem por multipart
+
       // atualizar lista de ads
+      updateAdList();
     }
+  }
+
+  _deleteCat(String id) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String token = prefs.getString('token');
+
+    var url = "http://localhost:3001/api/v1/gatinhos/" + id;
+    print("http: " + url);
+    final response = await http.delete(
+      Uri.parse(url),
+      headers: <String, String>{
+        'x-access-token': token,
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+    // atualizar lista de ads
+    updateAdList();
   }
 
   // Widget
@@ -210,7 +232,7 @@ class _HomeState extends State<Home> {
                     IconButton(
                       icon: Icon(Icons.delete),
                       onPressed: () {
-                        // TODO
+                        _deleteCat(catAdoptionAds.elementAt(index).id);
                       },
                     ),
                   ],
