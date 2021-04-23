@@ -74,10 +74,7 @@ class _HomeState extends State<Home> {
 
       if (adRet.id == null) {
         // salve on database
-        print("salvar contato");
-
         //var url = "http://10.0.2.2:3001/api/v1/gatinhos/";
-        print("retorno: " + adRet.description);
         var url = "http://localhost:3001/api/v1/gatinhos/";
         final response = await http.post(
           Uri.parse(url),
@@ -89,7 +86,6 @@ class _HomeState extends State<Home> {
             'name': adRet.catName,
             'description': adRet.description,
             'rescueDate': adRet.rescueDate.toString(),
-            //"2021-05-17T16:57:48.073+00:00", // TODO
             'gender': adRet.gender,
             'vaccines': adRet.healthTags.contains("Vacinado(a)").toString(),
             'castrate': adRet.healthTags.contains("Castrado(a)").toString(),
