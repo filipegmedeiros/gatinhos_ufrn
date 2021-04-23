@@ -88,7 +88,8 @@ class _HomeState extends State<Home> {
           body: jsonEncode(<String, String>{
             'name': adRet.catName,
             'description': adRet.description,
-            'rescueDate': "2021-05-17T16:57:48.073+00:00", // TODO
+            'rescueDate': adRet.rescueDate.toString(),
+            //"2021-05-17T16:57:48.073+00:00", // TODO
             'gender': adRet.gender,
             'vaccines': adRet.healthTags.contains("Vacinado(a)").toString(),
             'castrate': adRet.healthTags.contains("Castrado(a)").toString(),

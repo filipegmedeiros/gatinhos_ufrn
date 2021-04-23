@@ -2,7 +2,7 @@ class CatAd {
   String id;
   String img; // image path
   String catName;
-  String rescueDate;
+  DateTime rescueDate;
   String description;
   String gender;
   List<String> healthTags;
@@ -25,9 +25,11 @@ class CatAd {
     CatAd adRet = CatAd(
       id: parsedJson['id'].toString(),
       catName: parsedJson['name'].toString(),
-      rescueDate: parsedJson['rescueDate'].toString(),
+      rescueDate: DateTime.parse(parsedJson['rescueDate'].toString()),
       description: parsedJson['description'].toString(),
       gender: parsedJson['gender'].toString(),
+      img: "http://localhost:3001/api/v1/image/" +
+          parsedJson['image'].toString(),
     );
 
     if (parsedJson['vaccines'].toString() == "true") {

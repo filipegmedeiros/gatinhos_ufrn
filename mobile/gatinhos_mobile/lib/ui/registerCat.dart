@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:gatinhos_mobile/domain/catAd.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -28,6 +29,9 @@ class _RegisterCatState extends State<RegisterCat> {
   TextEditingController rescueDateController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
 
+  // keep datePicker return
+  DateTime selectedDate = DateTime.now();
+
   // radio button option
   Sexo _gender = Sexo.Feminino;
 
@@ -47,7 +51,9 @@ class _RegisterCatState extends State<RegisterCat> {
     } else {
       _editedCatAd = widget.catAd; // TODO check
       nameController.text = _editedCatAd.catName;
-      rescueDateController.text = _editedCatAd.rescueDate;
+      var date =
+          "${_editedCatAd.rescueDate.toLocal().day}/${_editedCatAd.rescueDate.toLocal().month}/${_editedCatAd.rescueDate.toLocal().year}";
+      rescueDateController.text = date;
       descriptionController.text = _editedCatAd.description;
     }
   }
@@ -218,28 +224,34 @@ class _RegisterCatState extends State<RegisterCat> {
   }
 
   _inputRescueDate() {
-    return TextFormField(
-      keyboardType: TextInputType.datetime,
-      decoration: InputDecoration(
-        labelText: "Data do resgate",
-        labelStyle: TextStyle(color: Colors.grey[700], fontSize: 18),
-        border: const UnderlineInputBorder(),
-        filled: true,
-        fillColor: Color(0xfff3f3f3),
+    return GestureDetector(
+      onTap: () => _selectDate(context),
+      child: AbsorbPointer(
+        child: TextFormField(
+          keyboardType: TextInputType.datetime,
+          decoration: InputDecoration(
+            labelText: "Data do resgate",
+            labelStyle: TextStyle(color: Colors.grey[700], fontSize: 18),
+            border: const UnderlineInputBorder(),
+            filled: true,
+            fillColor: Color(0xfff3f3f3),
+            icon: Icon(Icons.calendar_today),
+          ),
+          textAlign: TextAlign.left,
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 20,
+          ),
+          controller: rescueDateController,
+          onChanged: (text) {
+            _userEdited = true;
+          },
+          validator: _rescueDateValidator,
+          onSaved: (val) {
+            _editedCatAd.rescueDate = selectedDate;
+          },
+        ),
       ),
-      textAlign: TextAlign.left,
-      style: TextStyle(
-        color: Colors.black,
-        fontSize: 20,
-      ),
-      controller: rescueDateController,
-      onChanged: (text) {
-        _userEdited = true;
-      },
-      validator: _rescueDateValidator,
-      onSaved: (text) {
-        _editedCatAd.rescueDate = text;
-      },
     );
   }
 
@@ -358,12 +370,24 @@ class _RegisterCatState extends State<RegisterCat> {
     if (value == null || value.isEmpty) {
       return "Por favor, insira a data do resgate.";
     }
-/*
-    int age = int.tryParse(value);
-    if (age == null || 0 > age || age > 40) {
-      return "Idade inválida.";
-    }
-*/
     return null;
+  }
+
+  _selectDate(BuildContext context) async {
+    final DateTime picked = await showDatePicker(
+      context: context,
+      initialDate: selectedDate,
+      firstDate: DateTime(2015),
+      lastDate: DateTime.now(),
+    );
+
+    if (picked != null && picked != selectedDate) {
+      setState(() {
+        selectedDate = picked;
+        var date =
+            "${picked.toLocal().day}/${picked.toLocal().month}/${picked.toLocal().year}";
+        rescueDateController.text = date;
+      });
+    }
   }
 }

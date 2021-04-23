@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gatinhos_mobile/ui/login.dart';
 import 'package:gatinhos_mobile/ui/HomePage.dart';
-import 'package:gatinhos_mobile/ui/registerCat.dart';
 
 void main() {
   runApp(MaterialApp(
