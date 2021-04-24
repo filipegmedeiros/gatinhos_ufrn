@@ -28,17 +28,16 @@ class CatAd {
       rescueDate: DateTime.parse(parsedJson['rescueDate'].toString()),
       description: parsedJson['description'].toString(),
       gender: parsedJson['gender'].toString(),
-      //img: "http://localhost:3001/api/v1/image/" + parsedJson['_id'].toString(),
+      img: parsedJson['image'],
     );
 
     if (parsedJson['vaccines'].toString() == "true") {
       adRet.healthTags.add("Vacinado(a)");
     }
 
-    if (parsedJson['castrate'].toString() == "false") {
+    if (parsedJson['castrate'].toString() == "true") {
       adRet.healthTags.add("Castrado(a)");
     }
-
     return adRet;
   }
 
