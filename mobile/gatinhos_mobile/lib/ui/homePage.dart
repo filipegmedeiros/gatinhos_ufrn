@@ -21,27 +21,18 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   List<CatAd> catAdoptionAds = List.empty(growable: true);
 
-  @override
-  void initState() {
-    super.initState();
-    // update cat adoption ad list
-    updateAdList();
-  }
-
-  Future<void> updateAdList() async {
+  Future<List<CatAd>> getAdList() async {
     var url = "http://localhost:3001/api/v1/gatinhos/";
     final adList = await http.get(Uri.parse(url));
 
     var jsonList = jsonDecode(adList.body);
-    catAdoptionAds =
-        (jsonList as List).map((data) => new CatAd.fromJson(data)).toList();
+    return (jsonList as List).map((data) => new CatAd.fromJson(data)).toList();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        // TODO: verificar se não é melhor por uma SliverAppBar no lugar da AppBar
         title: Text("Home"),
         centerTitle: true,
         backgroundColor: Color(0xff3700b3),
@@ -55,12 +46,56 @@ class _HomeState extends State<Home> {
           _showRegisterCatPage();
         },
       ),
-      body: ListView.builder(
-          padding: EdgeInsets.all(15.0),
-          itemCount: catAdoptionAds.length,
-          itemBuilder: (context, index) {
-            return _catAdCard(context, index);
-          }),
+      body: FutureBuilder<List<CatAd>>(
+        future: getAdList(),
+        builder: (BuildContext context, AsyncSnapshot<List<CatAd>> snapshot) {
+          if (snapshot.hasData) {
+            catAdoptionAds = snapshot.data;
+            return ListView.builder(
+                padding: EdgeInsets.all(15.0),
+                itemCount: catAdoptionAds.length,
+                itemBuilder: (context, index) {
+                  return _catAdCard(context, index);
+                });
+          } else if (snapshot.hasError) {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  const Icon(
+                    Icons.error_outline,
+                    color: Colors.red,
+                    size: 60,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 16),
+                    child: Text('Error: ${snapshot.error}'),
+                  ),
+                ],
+              ),
+            );
+          } else {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: const <Widget>[
+                  SizedBox(
+                    child: CircularProgressIndicator(),
+                    width: 60,
+                    height: 60,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(top: 16),
+                    child: Text('Carregando...'),
+                  ),
+                ],
+              ),
+            );
+          }
+        },
+      ),
     );
   }
 
@@ -104,8 +139,8 @@ class _HomeState extends State<Home> {
 
       // TODO 'image': adRet.img, enviar imagem por multipart
 
-      // atualizar lista de ads
-      updateAdList();
+      // atualiza lista de ads
+      setState(() {});
     }
   }
 
@@ -114,7 +149,6 @@ class _HomeState extends State<Home> {
     String token = prefs.getString('token');
 
     var url = "http://localhost:3001/api/v1/gatinhos/" + id;
-    print("http: " + url);
     final response = await http.delete(
       Uri.parse(url),
       headers: <String, String>{
@@ -122,8 +156,9 @@ class _HomeState extends State<Home> {
         'Content-Type': 'application/json; charset=UTF-8',
       },
     );
-    // atualizar lista de ads
-    updateAdList();
+
+    // atualiza lista de ads
+    setState(() {});
   }
 
   // Widget

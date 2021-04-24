@@ -60,7 +60,6 @@ class _RegisterCatState extends State<RegisterCat> {
           _editedCatAd.gender == "Feminino" ? Sexo.Feminino : Sexo.Masculino;
       _castradoChecked = _editedCatAd.healthTags.contains("Castrado(a)");
       _vacinasChecked = _editedCatAd.healthTags.contains("Vacinado(a)");
-      print("id reg: " + widget.catAd.id);
     }
   }
 
