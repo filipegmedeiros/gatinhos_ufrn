@@ -284,17 +284,7 @@ class _HomeState extends State<Home> {
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   Expanded(
-                    child: Container(
-                      width: 120,
-                      height: 200,
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          fit: BoxFit.fitWidth,
-                          alignment: Alignment.center,
-                          image: AssetImage("images/cat2.jpg"),
-                        ),
-                      ),
-                    ),
+                    child: _getCatImage(catAdoptionAds.elementAt(index)),
                   ),
                 ],
               ),
@@ -374,5 +364,27 @@ class _HomeState extends State<Home> {
       );
     }
     return Container();
+  }
+
+  _getCatImage(CatAd cat) {
+    Widget imgRet;
+
+    if (cat.img == "null") {
+      imgRet = Container(
+        width: 120,
+        height: 200,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            fit: BoxFit.fitWidth,
+            alignment: Alignment.center,
+            image: AssetImage("images/cat2.jpg"),
+          ),
+        ),
+      );
+    } else {
+      imgRet = Image.network("http://localhost:3001/api/v1/image/" + cat.id);
+    }
+
+    return imgRet;
   }
 }
