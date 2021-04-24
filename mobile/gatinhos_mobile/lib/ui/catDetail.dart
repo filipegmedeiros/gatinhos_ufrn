@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gatinhos_mobile/ui/makeAdoptionRequest.dart';
 
 class CatDetail extends StatefulWidget {
   @override
@@ -55,7 +56,7 @@ class _CatDetailState extends State<CatDetail> {
                           Chip(
                             label: Text('Vacinado(a)',
                                 style: TextStyle(fontSize: 16)),
-                            backgroundColor: Colors.green[100],
+                            backgroundColor: Colors.green[50],
                           ),
                           SizedBox(width: 10),
                           Chip(
@@ -63,8 +64,29 @@ class _CatDetailState extends State<CatDetail> {
                               'Castrado(a)',
                               style: TextStyle(fontSize: 16),
                             ),
-                            backgroundColor: Colors.green[100],
+                            backgroundColor: Colors.green[50],
                           )
+                        ],
+                      ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: <Widget>[
+                          TextButton(
+                            child: const Text('RESGATAR',
+                                style: TextStyle(fontSize: 16)),
+                            style: TextButton.styleFrom(
+                              primary: Colors.white,
+                              backgroundColor: Colors.blue,
+                            ),
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          MakeAdoptionRequest()));
+                            },
+                          ),
                         ],
                       )
                     ],
