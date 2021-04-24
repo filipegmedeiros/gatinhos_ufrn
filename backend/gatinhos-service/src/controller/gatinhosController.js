@@ -27,6 +27,18 @@ const createGatinho = async (req, res) => {
   }
 };
 
+const updateGatinho = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    await gatinhosService.update(id, req.body);
+    return res.status(200).send("Gatinho atualizado com sucesso!");
+  } catch (error) {
+    console.log("Erro no updateGatinho", error);
+    return res.status(400).send(error.message);
+  }
+};
+
 const getOneGatinho = async (req, res) => {
   const { id } = req.params;
   try {
@@ -115,6 +127,7 @@ const deleteGatinho = async (req, res) => {
 };
 
 module.exports = {
+  updateGatinho,
   createGatinho,
   getOneGatinho,
   getAllGatinhos,
