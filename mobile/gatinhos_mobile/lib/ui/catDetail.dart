@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:gatinhos_mobile/models/AdoptionRequestModel.dart';
 import 'package:gatinhos_mobile/ui/makeAdoptionRequest.dart';
 
-class CatDetail extends StatefulWidget {
-  @override
-  _CatDetailState createState() => _CatDetailState();
-}
+class CatDetail extends StatelessWidget {
+  final gatinhoDetail;
+  CatDetail({this.gatinhoDetail});
 
-class _CatDetailState extends State<CatDetail> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Gatinho"),
+        title: Text(gatinhoDetail.name),
         centerTitle: true,
         backgroundColor: Color(0xff3700b3),
       ),
@@ -29,7 +28,7 @@ class _CatDetailState extends State<CatDetail> {
                   ),
                   alignment: Alignment.bottomLeft,
                   padding: EdgeInsets.only(left: 20, bottom: 10),
-                  child: Text("Gatinho",
+                  child: Text(gatinhoDetail.name,
                       style: TextStyle(
                           color: Colors.white,
                           fontSize: 36,
@@ -45,27 +44,30 @@ class _CatDetailState extends State<CatDetail> {
                   padding: EdgeInsets.all(20),
                   child: Column(
                     children: [
-                      Text(
-                          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse eget blandit eros, et bibendum tortor. Mauris interdum ex non nisi eleifend pellentesque. Sed et porta ligula. Quisque tincidunt tempor metus ut aliquet. Nam odio mi, cursus sed massa ut, pharetra iaculis neque. Fusce eget cursus eros. Phasellus luctus, lectus in tempus semper, mauris purus malesuada justo, vestibulum ultricies elit arcu ac tellus. Quisque lacinia tortor quis euismod porttitor. Quisque elementum metus eget urna dictum, at convallis libero dapibus. Donec laoreet quam a nisi ornare iaculis.",
+                      Text(gatinhoDetail.description,
                           textAlign: TextAlign.justify,
                           style:
                               TextStyle(color: Colors.black, fontSize: 16.5)),
                       SizedBox(height: 10),
                       Row(
                         children: [
-                          Chip(
-                            label: Text('Vacinado(a)',
-                                style: TextStyle(fontSize: 16)),
-                            backgroundColor: Colors.green[50],
-                          ),
+                          gatinhoDetail.vac == true
+                              ? Chip(
+                                  label: Text('Vacinado(a)',
+                                      style: TextStyle(fontSize: 16)),
+                                  backgroundColor: Colors.green[50],
+                                )
+                              : SizedBox(),
                           SizedBox(width: 10),
-                          Chip(
-                            label: Text(
-                              'Castrado(a)',
-                              style: TextStyle(fontSize: 16),
-                            ),
-                            backgroundColor: Colors.green[50],
-                          )
+                          gatinhoDetail.cast == true
+                              ? Chip(
+                                  label: Text(
+                                    'Castrado(a)',
+                                    style: TextStyle(fontSize: 16),
+                                  ),
+                                  backgroundColor: Colors.green[50],
+                                )
+                              : SizedBox()
                         ],
                       ),
                       SizedBox(height: 10),
@@ -83,11 +85,14 @@ class _CatDetailState extends State<CatDetail> {
                               backgroundColor: Colors.blue,
                             ),
                             onPressed: () {
+                              var catData = AdoptionRequestModel(
+                                  id: gatinhoDetail.id,
+                                  name: gatinhoDetail.name);
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) =>
-                                          MakeAdoptionRequest()));
+                                      builder: (context) => MakeAdoptionRequest(
+                                          catData: catData)));
                             },
                           ),
                         ],

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class MakeAdoptionRequest extends StatefulWidget {
+  final catData;
+  MakeAdoptionRequest({this.catData});
   @override
   _MakeAdoptionRequestState createState() => _MakeAdoptionRequestState();
 }
@@ -25,7 +27,8 @@ class _MakeAdoptionRequestState extends State<MakeAdoptionRequest> {
               child: Column(
                 children: [
                   Text(
-                      "Preencha o formulário para solicitar o resgate de Gatinho",
+                      "Preencha o formulário para solicitar o resgate de " +
+                          widget.catData.name,
                       textAlign: TextAlign.justify,
                       style: TextStyle(
                           color: Colors.black,

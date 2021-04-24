@@ -11,6 +11,8 @@ import 'package:gatinhos_mobile/ui/adoptionRequests.dart';
 import 'package:gatinhos_mobile/ui/login.dart';
 import 'package:gatinhos_mobile/ui/registerCat.dart';
 
+import 'package:gatinhos_mobile/models/CatDetailModel.dart';
+
 class Home extends StatefulWidget {
   static const String routeName = "/HomePage";
 
@@ -336,7 +338,24 @@ class _HomeState extends State<Home> {
                       "Vacinado(a)"),
                   TextButton(
                     onPressed: () {
-                      // TODO
+                      var gatinhoDetail = CatDetailModel(
+                          id: catAdoptionAds.elementAt(index).id,
+                          name: catAdoptionAds.elementAt(index).catName,
+                          description:
+                              catAdoptionAds.elementAt(index).description,
+                          vac: catAdoptionAds
+                              .elementAt(index)
+                              .healthTags
+                              .contains("Vacinado(a)"),
+                          cast: catAdoptionAds
+                              .elementAt(index)
+                              .healthTags
+                              .contains("Castrado(a)"));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  CatDetail(gatinhoDetail: gatinhoDetail)));
                     },
                     child: Text(
                       "VER MAIS",
