@@ -23,13 +23,12 @@ class CatAd {
 
   factory CatAd.fromJson(Map<String, dynamic> parsedJson) {
     CatAd adRet = CatAd(
-      id: parsedJson['id'].toString(),
+      id: parsedJson['_id'].toString(),
       catName: parsedJson['name'].toString(),
       rescueDate: DateTime.parse(parsedJson['rescueDate'].toString()),
       description: parsedJson['description'].toString(),
       gender: parsedJson['gender'].toString(),
-      img: "http://localhost:3001/api/v1/image/" +
-          parsedJson['image'].toString(),
+      //img: "http://localhost:3001/api/v1/image/" + parsedJson['_id'].toString(),
     );
 
     if (parsedJson['vaccines'].toString() == "true") {
@@ -39,6 +38,7 @@ class CatAd {
     if (parsedJson['castrate'].toString() == "false") {
       adRet.healthTags.add("Castrado(a)");
     }
+
     return adRet;
   }
 

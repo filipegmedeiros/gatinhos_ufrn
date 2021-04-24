@@ -34,8 +34,6 @@ class _HomeState extends State<Home> {
     var jsonList = jsonDecode(adList.body);
     catAdoptionAds =
         (jsonList as List).map((data) => new CatAd.fromJson(data)).toList();
-
-    print("id last: " + catAdoptionAds.last.id);
   }
 
   @override
