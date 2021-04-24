@@ -25,6 +25,10 @@ const del = async (id) => {
   return await gatinhosModel.findByIdAndDelete(id);
 };
 
+const update = async (gatinhoId, gatinho) => {
+  await gatinhosModel.findByIdAndUpdate(gatinhoId, gatinho);
+};
+
 const create = async (
   name,
   description,
@@ -62,6 +66,7 @@ const getAllByVaccines = async (vaccines) => {
 module.exports = {
   create,
   del,
+  update,
   existsById,
   getOne,
   getAll,
