@@ -22,7 +22,7 @@ class _HomeState extends State<Home> {
   List<CatAd> catAdoptionAds = List.empty(growable: true);
 
   Future<List<CatAd>> getAdList() async {
-    var url = "http://localhost:3001/api/v1/gatinhos/";
+    var url = "http://10.0.2.2:3001/api/v1/gatinhos/";
     final adList = await http.get(Uri.parse(url));
 
     var jsonList = jsonDecode(adList.body);
@@ -52,7 +52,7 @@ class _HomeState extends State<Home> {
           if (snapshot.hasData) {
             catAdoptionAds = snapshot.data;
             return ListView.builder(
-                padding: EdgeInsets.all(15.0),
+                padding: EdgeInsets.all(5),
                 itemCount: catAdoptionAds.length,
                 itemBuilder: (context, index) {
                   return _catAdCard(context, index);
@@ -112,10 +112,10 @@ class _HomeState extends State<Home> {
       if (adRet.id == null) {
         // salve on database
         //var url = "http://10.0.2.2:3001/api/v1/gatinhos/";
-        url = "http://localhost:3001/api/v1/gatinhos/";
+        url = "http://10.0.2.2:3001/api/v1/gatinhos/";
       } else {
         // update database
-        url = "http://localhost:3001/api/v1/gatinhos/" + adRet.id;
+        url = "http://10.0.2.2:3001/api/v1/gatinhos/" + adRet.id;
       }
 
       final response = await http.post(
@@ -148,7 +148,7 @@ class _HomeState extends State<Home> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String token = prefs.getString('token');
 
-    var url = "http://localhost:3001/api/v1/gatinhos/" + id;
+    var url = "http://10.0.2.2:3001/api/v1/gatinhos/" + id;
     final response = await http.delete(
       Uri.parse(url),
       headers: <String, String>{
@@ -235,7 +235,7 @@ class _HomeState extends State<Home> {
 
   Widget _catAdCard(BuildContext context, int index) {
     return Padding(
-      padding: EdgeInsets.all(10),
+      padding: EdgeInsets.all(5),
       child: Card(
         elevation: 2,
         child: InkWell(
@@ -312,8 +312,7 @@ class _HomeState extends State<Home> {
                                   .length,
                               200)),
                       style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
+                        fontSize: 16,
                         color: Colors.grey[800],
                       ),
                     ),
