@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class MakeAdoptionRequest extends StatefulWidget {
   final catData;
@@ -11,12 +14,49 @@ class _MakeAdoptionRequestState extends State<MakeAdoptionRequest> {
   bool _screenGuard = false;
   bool _animals = false;
   bool _isHouse2 = false;
-  int _isHouse = 0;
+
+  TextEditingController nameController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
+
+  void _handleIsHouseChange(bool value) {
+    setState(() {
+      _isHouse2 = value;
+    });
+  }
 
   void _handleScreenGuardChange(bool value) {
     setState(() {
       _screenGuard = value;
     });
+  }
+
+  void _handleAnimalsChange(bool value) {
+    setState(() {
+      _animals = value;
+    });
+  }
+
+  void _sendAdoptionRequest() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String token = prefs.getString('token');
+
+    var url = "http://10.0.2.2:3001/api/v1/adocao/";
+
+    final response = await http.post(
+      Uri.parse(url),
+      headers: <String, String>{
+        'x-access-token': token,
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode({
+        'id': widget.catData.id,
+        'animals': _animals,
+        'screen_guard': _screenGuard,
+        'name': nameController.text,
+        'phone': phoneController.text,
+        'adress': ' '
+      }),
+    );
   }
 
   @override
@@ -52,6 +92,7 @@ class _MakeAdoptionRequestState extends State<MakeAdoptionRequest> {
                   SizedBox(height: 30),
                   TextFormField(
                     keyboardType: TextInputType.text,
+                    controller: nameController,
                     decoration: InputDecoration(
                       labelText: "Seu nome completo",
                       labelStyle:
@@ -69,6 +110,7 @@ class _MakeAdoptionRequestState extends State<MakeAdoptionRequest> {
                   SizedBox(height: 20),
                   TextFormField(
                     keyboardType: TextInputType.text,
+                    controller: phoneController,
                     decoration: InputDecoration(
                       labelText: "Telefone",
                       labelStyle:
@@ -95,15 +137,17 @@ class _MakeAdoptionRequestState extends State<MakeAdoptionRequest> {
                       ListTile(
                         title: const Text("Casa"),
                         leading: Radio(
-                          value: 1,
-                          groupValue: _isHouse,
+                          value: true,
+                          groupValue: _isHouse2,
+                          onChanged: _handleIsHouseChange,
                         ),
                       ),
                       ListTile(
                         title: const Text("Apartamento"),
                         leading: Radio(
-                          value: 0,
-                          groupValue: _isHouse,
+                          value: false,
+                          groupValue: _isHouse2,
+                          onChanged: _handleIsHouseChange,
                         ),
                       ),
                       SizedBox(height: 20),
@@ -137,15 +181,17 @@ class _MakeAdoptionRequestState extends State<MakeAdoptionRequest> {
                       ListTile(
                         title: const Text("Sim"),
                         leading: Radio(
-                          value: 1,
-                          groupValue: _isHouse,
+                          value: true,
+                          groupValue: _animals,
+                          onChanged: _handleAnimalsChange,
                         ),
                       ),
                       ListTile(
                         title: const Text("Não"),
                         leading: Radio(
-                          value: 0,
-                          groupValue: _isHouse,
+                          value: false,
+                          groupValue: _animals,
+                          onChanged: _handleAnimalsChange,
                         ),
                       ),
                     ],
@@ -163,7 +209,7 @@ class _MakeAdoptionRequestState extends State<MakeAdoptionRequest> {
                           primary: Colors.white,
                           backgroundColor: Colors.blue,
                         ),
-                        onPressed: () {},
+                        onPressed: _sendAdoptionRequest,
                       ),
                     ],
                   )
