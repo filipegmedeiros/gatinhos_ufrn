@@ -68,14 +68,17 @@ class _CatDetailState extends State<CatDetail> {
                           )
                         ],
                       ),
+                      SizedBox(height: 10),
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: <Widget>[
                           TextButton(
                             child: const Text('RESGATAR',
-                                style: TextStyle(fontSize: 16)),
+                                style: TextStyle(fontSize: 18)),
                             style: TextButton.styleFrom(
+                              padding: EdgeInsets.only(
+                                  right: 20, left: 20, top: 10, bottom: 10),
                               primary: Colors.white,
                               backgroundColor: Colors.blue,
                             ),
