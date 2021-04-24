@@ -1,17 +1,16 @@
 const { gatinhosService } = require("../service");
 
 const createGatinho = async (req, res) => {
+  console.log(req.body);
   try {
     const {
       name,
       description,
-      //rescueDate,
+      rescueDate,
       gender,
       vaccines,
       castrate,
     } = req.body;
-
-    let rescueDate = new Date();
 
     await gatinhosService.create(
       name,
@@ -21,7 +20,7 @@ const createGatinho = async (req, res) => {
       vaccines,
       castrate
     );
-    return res.status(200).send();
+    return res.status(200).send("Criado gatinho com sucesso!");
   } catch (error) {
     console.log("Erro no createGatinho", error);
     return res.status(400).send(error.message);

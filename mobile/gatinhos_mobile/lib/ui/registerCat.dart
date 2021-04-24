@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:gatinhos_mobile/domain/catAd.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -25,11 +26,14 @@ class _RegisterCatState extends State<RegisterCat> {
 
   // input textfield controllers
   TextEditingController nameController = TextEditingController();
-  TextEditingController ageController = TextEditingController();
+  TextEditingController rescueDateController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
 
+  // keep datePicker return
+  DateTime selectedDate = DateTime.now();
+
   // radio button option
-  Sexo _sexo = Sexo.Feminino;
+  Sexo _gender = Sexo.Feminino;
 
   // checkbox options
   bool _castradoChecked = false;
@@ -44,11 +48,19 @@ class _RegisterCatState extends State<RegisterCat> {
     // acessando o ad definido no widget(registerCat)
     if (widget.catAd == null) {
       _editedCatAd = CatAd();
+      _editedCatAd.gender = "Feminino";
     } else {
-      _editedCatAd = widget.catAd; // TODO check
+      _editedCatAd = widget.catAd;
       nameController.text = _editedCatAd.catName;
-      ageController.text = _editedCatAd.catAge;
+      var date =
+          "${_editedCatAd.rescueDate.toLocal().day}/${_editedCatAd.rescueDate.toLocal().month}/${_editedCatAd.rescueDate.toLocal().year}";
+      rescueDateController.text = date;
       descriptionController.text = _editedCatAd.description;
+      _gender =
+          _editedCatAd.gender == "Feminino" ? Sexo.Feminino : Sexo.Masculino;
+      _castradoChecked = _editedCatAd.healthTags.contains("Castrado(a)");
+      _vacinasChecked = _editedCatAd.healthTags.contains("Vacinado(a)");
+      print("id reg: " + widget.catAd.id);
     }
   }
 
@@ -110,7 +122,7 @@ class _RegisterCatState extends State<RegisterCat> {
                       SizedBox(
                         width: 15.0,
                       ),
-                      Flexible(child: _inputAge())
+                      Flexible(child: _inputRescueDate())
                     ],
                   ),
                   Divider(),
@@ -211,36 +223,41 @@ class _RegisterCatState extends State<RegisterCat> {
       onChanged: (text) {
         _userEdited = true;
       },
-      validator: _catNameValidator,
       onSaved: (text) {
         _editedCatAd.catName = text;
       },
     );
   }
 
-  _inputAge() {
-    return TextFormField(
-      keyboardType: TextInputType.number,
-      decoration: InputDecoration(
-        labelText: "Idade",
-        labelStyle: TextStyle(color: Colors.grey[700], fontSize: 18),
-        border: const UnderlineInputBorder(),
-        filled: true,
-        fillColor: Color(0xfff3f3f3),
+  _inputRescueDate() {
+    return GestureDetector(
+      onTap: () => _selectDate(context),
+      child: AbsorbPointer(
+        child: TextFormField(
+          keyboardType: TextInputType.datetime,
+          decoration: InputDecoration(
+            labelText: "Data do resgate",
+            labelStyle: TextStyle(color: Colors.grey[700], fontSize: 18),
+            border: const UnderlineInputBorder(),
+            filled: true,
+            fillColor: Color(0xfff3f3f3),
+            icon: Icon(Icons.calendar_today),
+          ),
+          textAlign: TextAlign.left,
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 20,
+          ),
+          controller: rescueDateController,
+          onChanged: (text) {
+            _userEdited = true;
+          },
+          validator: _rescueDateValidator,
+          onSaved: (val) {
+            _editedCatAd.rescueDate = selectedDate;
+          },
+        ),
       ),
-      textAlign: TextAlign.left,
-      style: TextStyle(
-        color: Colors.black,
-        fontSize: 20,
-      ),
-      controller: ageController,
-      onChanged: (text) {
-        _userEdited = true;
-      },
-      validator: _catAgeValidator,
-      onSaved: (text) {
-        _editedCatAd.catAge = text;
-      },
     );
   }
 
@@ -266,6 +283,7 @@ class _RegisterCatState extends State<RegisterCat> {
       onChanged: (text) {
         _userEdited = true;
       },
+      validator: _descriptionValidator,
       onSaved: (text) {
         _editedCatAd.description = text;
       },
@@ -277,33 +295,31 @@ class _RegisterCatState extends State<RegisterCat> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text("Sexo"),
-        ListTile(
+        RadioListTile(
           title: const Text("Feminino"),
-          leading: Radio<Sexo>(
-            value: Sexo.Feminino,
-            groupValue: _sexo,
-            onChanged: (Sexo value) {
-              _userEdited = true;
-              _editedCatAd.sex = "Feminino";
-              setState(() {
-                _sexo = value;
-              });
-            },
-          ),
+          value: Sexo.Feminino,
+          groupValue: _gender,
+          onChanged: (Sexo value) {
+            _userEdited = true;
+            _editedCatAd.gender = "Feminino";
+            setState(() {
+              _gender = value;
+            });
+          },
+          contentPadding: EdgeInsets.zero,
         ),
-        ListTile(
+        RadioListTile(
           title: const Text("Masculino"),
-          leading: Radio<Sexo>(
-            value: Sexo.Masculino,
-            groupValue: _sexo,
-            onChanged: (Sexo value) {
-              _userEdited = true;
-              _editedCatAd.sex = "Masculino";
-              setState(() {
-                _sexo = value;
-              });
-            },
-          ),
+          value: Sexo.Masculino,
+          groupValue: _gender,
+          onChanged: (Sexo value) {
+            _userEdited = true;
+            _editedCatAd.gender = "Masculino";
+            setState(() {
+              _gender = value;
+            });
+          },
+          contentPadding: EdgeInsets.zero,
         ),
       ],
     );
@@ -315,55 +331,69 @@ class _RegisterCatState extends State<RegisterCat> {
       children: <Widget>[
         Text("Saúde"),
         CheckboxListTile(
-            title: Text("Castrado(a)"),
-            controlAffinity: ListTileControlAffinity.leading,
-            value: _castradoChecked,
-            onChanged: (bool value) {
-              setState(() {
-                _castradoChecked = value;
-              });
-              _userEdited = true;
-              _castradoChecked
-                  ? _editedCatAd.healthTags.add("Castrado(a)")
-                  : _editedCatAd.healthTags.remove("Castrado(a)");
-              //print("Checkbox castrado:" + _editedCatAd.healthTags.toString());
-            }),
+          title: Text("Castrado(a)"),
+          controlAffinity: ListTileControlAffinity.leading,
+          value: _castradoChecked,
+          onChanged: (bool value) {
+            setState(() {
+              _castradoChecked = value;
+            });
+            _userEdited = true;
+            _castradoChecked
+                ? _editedCatAd.healthTags.add("Castrado(a)")
+                : _editedCatAd.healthTags.remove("Castrado(a)");
+          },
+          contentPadding: EdgeInsets.zero,
+        ),
         CheckboxListTile(
-            title: Text("Vacinado(a)"),
-            controlAffinity: ListTileControlAffinity.leading,
-            value: _vacinasChecked,
-            onChanged: (bool value) {
-              setState(() {
-                _vacinasChecked = value;
-              });
-              _userEdited = true;
-              _vacinasChecked
-                  ? _editedCatAd.healthTags.add("Vacinado(a)")
-                  : _editedCatAd.healthTags.remove("Vacinado(a)");
-              //print("Checkbox vacinado:" + _editedCatAd.healthTags.toString());
-            }),
+          title: Text("Vacinado(a)"),
+          controlAffinity: ListTileControlAffinity.leading,
+          value: _vacinasChecked,
+          onChanged: (bool value) {
+            setState(() {
+              _vacinasChecked = value;
+            });
+            _userEdited = true;
+            _vacinasChecked
+                ? _editedCatAd.healthTags.add("Vacinado(a)")
+                : _editedCatAd.healthTags.remove("Vacinado(a)");
+          },
+          contentPadding: EdgeInsets.all(0),
+        ),
       ],
     );
   }
 
   /// Field validators
-  String _catNameValidator(String value) {
+  String _descriptionValidator(String value) {
     if (value == null || value.isEmpty) {
-      return "Por favor, insira o nome do gato.";
+      return "Por favor, insira uma descrição do gato.";
     }
     return null;
   }
 
-  String _catAgeValidator(String value) {
+  String _rescueDateValidator(String value) {
     if (value == null || value.isEmpty) {
-      return null;
+      return "Por favor, insira a data do resgate.";
     }
-
-    int age = int.tryParse(value);
-    if (age == null || 0 > age || age > 40) {
-      return "Idade inválida.";
-    }
-
     return null;
+  }
+
+  _selectDate(BuildContext context) async {
+    final DateTime picked = await showDatePicker(
+      context: context,
+      initialDate: selectedDate,
+      firstDate: DateTime(2015),
+      lastDate: DateTime.now(),
+    );
+
+    if (picked != null && picked != selectedDate) {
+      setState(() {
+        selectedDate = picked;
+        var date =
+            "${picked.toLocal().day}/${picked.toLocal().month}/${picked.toLocal().year}";
+        rescueDateController.text = date;
+      });
+    }
   }
 }
