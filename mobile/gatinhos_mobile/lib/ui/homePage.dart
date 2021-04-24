@@ -11,6 +11,8 @@ import 'package:gatinhos_mobile/ui/adoptionRequests.dart';
 import 'package:gatinhos_mobile/ui/login.dart';
 import 'package:gatinhos_mobile/ui/registerCat.dart';
 
+import 'package:gatinhos_mobile/models/CatDetailModel.dart';
+
 class Home extends StatefulWidget {
   static const String routeName = "/HomePage";
 
@@ -22,7 +24,7 @@ class _HomeState extends State<Home> {
   List<CatAd> catAdoptionAds = List.empty(growable: true);
 
   Future<List<CatAd>> getAdList() async {
-    var url = "http://localhost:3001/api/v1/gatinhos/";
+    var url = "http://10.0.2.2:3001/api/v1/gatinhos/";
     final adList = await http.get(Uri.parse(url));
 
     var jsonList = jsonDecode(adList.body);
@@ -52,7 +54,7 @@ class _HomeState extends State<Home> {
           if (snapshot.hasData) {
             catAdoptionAds = snapshot.data;
             return ListView.builder(
-                padding: EdgeInsets.all(15.0),
+                padding: EdgeInsets.all(5),
                 itemCount: catAdoptionAds.length,
                 itemBuilder: (context, index) {
                   return _catAdCard(context, index);
@@ -112,10 +114,10 @@ class _HomeState extends State<Home> {
       if (adRet.id == null) {
         // salve on database
         //var url = "http://10.0.2.2:3001/api/v1/gatinhos/";
-        url = "http://localhost:3001/api/v1/gatinhos/";
+        url = "http://10.0.2.2:3001/api/v1/gatinhos/";
       } else {
         // update database
-        url = "http://localhost:3001/api/v1/gatinhos/" + adRet.id;
+        url = "http://10.0.2.2:3001/api/v1/gatinhos/" + adRet.id;
       }
 
       final response = await http.post(
@@ -148,7 +150,7 @@ class _HomeState extends State<Home> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String token = prefs.getString('token');
 
-    var url = "http://localhost:3001/api/v1/gatinhos/" + id;
+    var url = "http://10.0.2.2:3001/api/v1/gatinhos/" + id;
     final response = await http.delete(
       Uri.parse(url),
       headers: <String, String>{
@@ -207,14 +209,6 @@ class _HomeState extends State<Home> {
             },
           ),
           ListTile(
-            leading: Icon(Icons.read_more),
-            title: Text("Detalhe (teste)"),
-            onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => CatDetail()));
-            },
-          ),
-          ListTile(
             leading: Icon(Icons.logout),
             title: Text("Logout"),
             onTap: () async {
@@ -235,7 +229,7 @@ class _HomeState extends State<Home> {
 
   Widget _catAdCard(BuildContext context, int index) {
     return Padding(
-      padding: EdgeInsets.all(10),
+      padding: EdgeInsets.all(5),
       child: Card(
         elevation: 2,
         child: InkWell(
@@ -289,8 +283,10 @@ class _HomeState extends State<Home> {
                 ],
               ),
               Padding(
-                padding: EdgeInsets.all(10),
-                child: Row(
+                padding: EdgeInsets.fromLTRB(15, 20, 10, 15),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
                       catAdoptionAds.elementAt(index).description.substring(
@@ -302,39 +298,55 @@ class _HomeState extends State<Home> {
                                   .length,
                               200)),
                       style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
+                        fontSize: 16,
                         color: Colors.grey[800],
                       ),
                     ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                        _tag(
+                            catAdoptionAds
+                                .elementAt(index)
+                                .healthTags
+                                .contains("Castrado(a)"),
+                            "Castrado(a)"),
+                        _tag(
+                            catAdoptionAds
+                                .elementAt(index)
+                                .healthTags
+                                .contains("Vacinado(a)"),
+                            "Vacinado(a)"),
+                        TextButton(
+                          onPressed: () {
+                            var gatinhoDetail = CatDetailModel(
+                                id: catAdoptionAds.elementAt(index).id,
+                                name: catAdoptionAds.elementAt(index).catName,
+                                description:
+                                    catAdoptionAds.elementAt(index).description,
+                                vac: catAdoptionAds
+                                    .elementAt(index)
+                                    .healthTags
+                                    .contains("Vacinado(a)"),
+                                cast: catAdoptionAds
+                                    .elementAt(index)
+                                    .healthTags
+                                    .contains("Castrado(a)"));
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => CatDetail(
+                                        gatinhoDetail: gatinhoDetail)));
+                          },
+                          child: Text(
+                            "VER MAIS",
+                            style: TextStyle(color: Color(0xff751ff0)),
+                          ),
+                        ),
+                      ],
+                    ),
                   ],
                 ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: <Widget>[
-                  _tag(
-                      catAdoptionAds
-                          .elementAt(index)
-                          .healthTags
-                          .contains("Castrado(a)"),
-                      "Castrado(a)"),
-                  _tag(
-                      catAdoptionAds
-                          .elementAt(index)
-                          .healthTags
-                          .contains("Vacinado(a)"),
-                      "Vacinado(a)"),
-                  TextButton(
-                    onPressed: () {
-                      // TODO
-                    },
-                    child: Text(
-                      "VER MAIS",
-                      style: TextStyle(color: Color(0xff751ff0)),
-                    ),
-                  ),
-                ],
               ),
             ],
           ),
@@ -346,7 +358,7 @@ class _HomeState extends State<Home> {
   _tag(bool containsTag, String tagLabel) {
     if (containsTag) {
       return Padding(
-        padding: EdgeInsets.all(10),
+        padding: EdgeInsets.all(5),
         child: Container(
           decoration: BoxDecoration(
             shape: BoxShape.rectangle,

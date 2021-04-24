@@ -106,13 +106,22 @@ class _RegisterCatState extends State<RegisterCat> {
         ),
         body: Container(
           child: SingleChildScrollView(
-            padding: EdgeInsets.fromLTRB(15, 30, 15, 0),
+            padding: EdgeInsets.fromLTRB(15, 20, 15, 20),
             child: Form(
               key: _formKey,
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  _inputImage(),
+                  Text(
+                    "Selecione uma imagem",
+                    style: TextStyle(fontSize: 16, color: Colors.grey[700]),
+                  ),
+                  SizedBox(height: 5),
+                  Container(
+                    height: 215,
+                    child: _inputImage(),
+                  ),
                   Divider(),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -131,25 +140,29 @@ class _RegisterCatState extends State<RegisterCat> {
                   Divider(),
                   _inputSaude(),
                   Divider(),
-                  ElevatedButton(
-                    child: Text(
-                      'CADASTRAR',
-                      style: TextStyle(fontSize: 20),
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      primary: Color(0xff6200ee),
-                      padding: EdgeInsets.fromLTRB(30, 15, 30, 15),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5)),
-                    ),
-                    onPressed: () {
-                      if (_formKey.currentState.validate()) {
-                        // save form
-                        _formKey.currentState.save();
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      TextButton(
+                        child: const Text('ENVIAR',
+                            style: TextStyle(fontSize: 18)),
+                        style: TextButton.styleFrom(
+                          padding: EdgeInsets.only(
+                              right: 20, left: 20, top: 10, bottom: 10),
+                          primary: Colors.white,
+                          backgroundColor: Colors.blue,
+                        ),
+                        onPressed: () {
+                          if (_formKey.currentState.validate()) {
+                            // save form
+                            _formKey.currentState.save();
 
-                        Navigator.pop(context, _editedCatAd);
-                      }
-                    },
+                            Navigator.pop(context, _editedCatAd);
+                          }
+                        },
+                      ),
+                    ],
                   )
                 ],
               ),
@@ -166,38 +179,42 @@ class _RegisterCatState extends State<RegisterCat> {
     return Stack(
       children: <Widget>[
         Container(
-          width: 400.0,
-          height: 150,
+          width: double.infinity,
+          height: 200,
           decoration: BoxDecoration(
             shape: BoxShape.rectangle,
             image: DecorationImage(
-              fit: BoxFit.contain,
+              fit: BoxFit.cover,
               image: _editedCatAd.img != null
                   ? FileImage(File(_editedCatAd.img))
-                  : AssetImage("images/defaultCat.jpg"),
+                  : AssetImage("images/defaultCat.png"),
             ),
           ),
         ),
         Positioned(
-            right: 0.0,
-            bottom: 0.0,
-            child: FloatingActionButton(
-              child: Icon(Icons.add_a_photo_outlined),
-              backgroundColor: Color(0xff5600e8),
-              onPressed: () {
-                ImagePicker()
-                    .getImage(source: ImageSource.gallery, imageQuality: 50)
-                    .then((file) {
-                  if (file == null) {
-                    return;
-                  } else {
-                    _userEdited = true;
-                    setState(() {
-                      _editedCatAd.img = file.path;
-                    });
-                  }
-                });
-              },
+            right: 10,
+            bottom: 0,
+            child: SizedBox(
+              width: 70.0,
+              height: 70.0,
+              child: FloatingActionButton(
+                child: Icon(Icons.add_a_photo_outlined),
+                backgroundColor: Color(0xff5600e8),
+                onPressed: () {
+                  ImagePicker()
+                      .getImage(source: ImageSource.gallery, imageQuality: 50)
+                      .then((file) {
+                    if (file == null) {
+                      return;
+                    } else {
+                      _userEdited = true;
+                      setState(() {
+                        _editedCatAd.img = file.path;
+                      });
+                    }
+                  });
+                },
+              ),
             ))
       ],
     );

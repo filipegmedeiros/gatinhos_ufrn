@@ -63,6 +63,7 @@ flutter:
     - images/cat1.jpg
     - images/cat2.jpg
     - images/defaultCat.jpg
+    - images/defaultCat.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
