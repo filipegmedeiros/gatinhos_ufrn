@@ -48,9 +48,10 @@ class _RegisterCatState extends State<RegisterCat> {
     // acessando o ad definido no widget(registerCat)
     if (widget.catAd == null) {
       _editedCatAd = CatAd();
-      _editedCatAd.gender = "Feminino";
+      _editedCatAd.gender = "Feminino"; // default gender
     } else {
       _editedCatAd = widget.catAd;
+
       nameController.text = _editedCatAd.catName;
       var date =
           "${_editedCatAd.rescueDate.toLocal().day}/${_editedCatAd.rescueDate.toLocal().month}/${_editedCatAd.rescueDate.toLocal().year}";
@@ -178,19 +179,7 @@ class _RegisterCatState extends State<RegisterCat> {
     // floating action button; Icons.add
     return Stack(
       children: <Widget>[
-        Container(
-          width: double.infinity,
-          height: 200,
-          decoration: BoxDecoration(
-            shape: BoxShape.rectangle,
-            image: DecorationImage(
-              fit: BoxFit.cover,
-              image: _editedCatAd.img != null
-                  ? FileImage(File(_editedCatAd.img))
-                  : AssetImage("images/defaultCat.png"),
-            ),
-          ),
-        ),
+        _catImage(_editedCatAd),
         Positioned(
             right: 10,
             bottom: 0,
@@ -412,4 +401,27 @@ class _RegisterCatState extends State<RegisterCat> {
       });
     }
   }
+}
+
+_catImage(CatAd cat) {
+  Widget imgRet;
+
+  if (cat.img == null) {
+    imgRet = Container(
+      width: double.infinity,
+      height: 200,
+      decoration: BoxDecoration(
+        shape: BoxShape.rectangle,
+        image: DecorationImage(
+          fit: BoxFit.cover,
+          image: AssetImage("images/defaultCat.png"),
+        ),
+      ),
+    );
+  } else {
+    //imgRet = Image.network("http://10.0.2.2:3001/api/v1/image/" + cat.id); // android
+    imgRet =
+        Image.network("http://localhost:3001/api/v1/image/" + cat.id); // ios
+  }
+  return imgRet;
 }

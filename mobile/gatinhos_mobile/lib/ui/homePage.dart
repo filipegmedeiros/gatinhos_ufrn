@@ -24,7 +24,9 @@ class _HomeState extends State<Home> {
   List<CatAd> catAdoptionAds = List.empty(growable: true);
 
   Future<List<CatAd>> getAdList() async {
-    var url = "http://10.0.2.2:3001/api/v1/gatinhos/";
+    //var url = "http://10.0.2.2:3001/api/v1/gatinhos/"; // android
+    var url = "http://localhost:3001/api/v1/gatinhos/"; // ios
+
     final adList = await http.get(Uri.parse(url));
 
     var jsonList = jsonDecode(adList.body);
@@ -113,11 +115,12 @@ class _HomeState extends State<Home> {
       var url;
       if (adRet.id == null) {
         // salve on database
-        //var url = "http://10.0.2.2:3001/api/v1/gatinhos/";
-        url = "http://10.0.2.2:3001/api/v1/gatinhos/";
+        //url = "http://10.0.2.2:3001/api/v1/gatinhos/"; // android
+        url = "http://localhost:3001/api/v1/gatinhos/"; // ios
       } else {
         // update database
-        url = "http://10.0.2.2:3001/api/v1/gatinhos/" + adRet.id;
+        //url = "http://10.0.2.2:3001/api/v1/gatinhos/" + adRet.id; // android
+        url = "http://localhost:3001/api/v1/gatinhos/" + adRet.id; // ios
       }
 
       final response = await http.post(
@@ -150,7 +153,9 @@ class _HomeState extends State<Home> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String token = prefs.getString('token');
 
-    var url = "http://10.0.2.2:3001/api/v1/gatinhos/" + id;
+    //var url = "http://10.0.2.2:3001/api/v1/gatinhos/" + id; // android
+    var url = "http://localhost:3001/api/v1/gatinhos/" + id; // ios
+
     final response = await http.delete(
       Uri.parse(url),
       headers: <String, String>{
@@ -235,8 +240,8 @@ class _HomeState extends State<Home> {
         child: InkWell(
           splashColor: Colors.blue.withAlpha(30),
           onTap: () {
-            // TODO open cat ad page
-            print("cat ad tapped.");
+            // TODO open cat ad page or remove
+            //print("cat ad tapped.");
           },
           child: Column(
             children: <Widget>[
@@ -381,7 +386,7 @@ class _HomeState extends State<Home> {
   _getCatImage(CatAd cat) {
     Widget imgRet;
 
-    if (cat.img == "null") {
+    if (cat.img == null) {
       imgRet = Container(
         width: 120,
         height: 200,
@@ -394,7 +399,9 @@ class _HomeState extends State<Home> {
         ),
       );
     } else {
-      imgRet = Image.network("http://localhost:3001/api/v1/image/" + cat.id);
+      //imgRet = Image.network("http://10.0.2.2:3001/api/v1/image/" + cat.id); // android
+      imgRet =
+          Image.network("http://localhost:3001/api/v1/image/" + cat.id); // ios
     }
 
     return imgRet;
