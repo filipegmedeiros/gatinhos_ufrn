@@ -106,13 +106,22 @@ class _RegisterCatState extends State<RegisterCat> {
         ),
         body: Container(
           child: SingleChildScrollView(
-            padding: EdgeInsets.fromLTRB(15, 15, 15, 20),
+            padding: EdgeInsets.fromLTRB(15, 20, 15, 20),
             child: Form(
               key: _formKey,
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  _inputImage(),
+                  Text(
+                    "Selecione uma imagem",
+                    style: TextStyle(fontSize: 16, color: Colors.grey[700]),
+                  ),
+                  SizedBox(height: 5),
+                  Container(
+                    height: 215,
+                    child: _inputImage(),
+                  ),
                   Divider(),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -183,25 +192,29 @@ class _RegisterCatState extends State<RegisterCat> {
           ),
         ),
         Positioned(
-            right: 0.0,
+            right: 10,
             bottom: 0,
-            child: FloatingActionButton(
-              child: Icon(Icons.add_a_photo_outlined),
-              backgroundColor: Color(0xff5600e8),
-              onPressed: () {
-                ImagePicker()
-                    .getImage(source: ImageSource.gallery, imageQuality: 50)
-                    .then((file) {
-                  if (file == null) {
-                    return;
-                  } else {
-                    _userEdited = true;
-                    setState(() {
-                      _editedCatAd.img = file.path;
-                    });
-                  }
-                });
-              },
+            child: SizedBox(
+              width: 70.0,
+              height: 70.0,
+              child: FloatingActionButton(
+                child: Icon(Icons.add_a_photo_outlined),
+                backgroundColor: Color(0xff5600e8),
+                onPressed: () {
+                  ImagePicker()
+                      .getImage(source: ImageSource.gallery, imageQuality: 50)
+                      .then((file) {
+                    if (file == null) {
+                      return;
+                    } else {
+                      _userEdited = true;
+                      setState(() {
+                        _editedCatAd.img = file.path;
+                      });
+                    }
+                  });
+                },
+              ),
             ))
       ],
     );

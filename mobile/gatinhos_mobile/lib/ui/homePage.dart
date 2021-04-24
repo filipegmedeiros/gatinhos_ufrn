@@ -209,14 +209,6 @@ class _HomeState extends State<Home> {
             },
           ),
           ListTile(
-            leading: Icon(Icons.read_more),
-            title: Text("Detalhe (teste)"),
-            onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => CatDetail()));
-            },
-          ),
-          ListTile(
             leading: Icon(Icons.logout),
             title: Text("Logout"),
             onTap: () async {
