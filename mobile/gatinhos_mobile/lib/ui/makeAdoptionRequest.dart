@@ -8,7 +8,16 @@ class MakeAdoptionRequest extends StatefulWidget {
 }
 
 class _MakeAdoptionRequestState extends State<MakeAdoptionRequest> {
-  int _isHouse = 1;
+  bool _screenGuard = false;
+  bool _animals = false;
+  bool _isHouse2 = false;
+  int _isHouse = 0;
+
+  void _handleScreenGuardChange(bool value) {
+    setState(() {
+      _screenGuard = value;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -106,15 +115,17 @@ class _MakeAdoptionRequestState extends State<MakeAdoptionRequest> {
                       ListTile(
                         title: const Text("Sim"),
                         leading: Radio(
-                          value: 1,
-                          groupValue: _isHouse,
+                          value: true,
+                          groupValue: _screenGuard,
+                          onChanged: _handleScreenGuardChange,
                         ),
                       ),
                       ListTile(
                         title: const Text("Não ou só em alguns lugares"),
                         leading: Radio(
-                          value: 0,
-                          groupValue: _isHouse,
+                          value: false,
+                          groupValue: _screenGuard,
+                          onChanged: _handleScreenGuardChange,
                         ),
                       ),
                       SizedBox(height: 20),

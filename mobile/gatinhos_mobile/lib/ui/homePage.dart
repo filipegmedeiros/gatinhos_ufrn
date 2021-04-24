@@ -293,8 +293,10 @@ class _HomeState extends State<Home> {
                 ],
               ),
               Padding(
-                padding: EdgeInsets.all(10),
-                child: Row(
+                padding: EdgeInsets.fromLTRB(15, 20, 10, 15),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
                       catAdoptionAds.elementAt(index).description.substring(
@@ -310,51 +312,51 @@ class _HomeState extends State<Home> {
                         color: Colors.grey[800],
                       ),
                     ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                        _tag(
+                            catAdoptionAds
+                                .elementAt(index)
+                                .healthTags
+                                .contains("Castrado(a)"),
+                            "Castrado(a)"),
+                        _tag(
+                            catAdoptionAds
+                                .elementAt(index)
+                                .healthTags
+                                .contains("Vacinado(a)"),
+                            "Vacinado(a)"),
+                        TextButton(
+                          onPressed: () {
+                            var gatinhoDetail = CatDetailModel(
+                                id: catAdoptionAds.elementAt(index).id,
+                                name: catAdoptionAds.elementAt(index).catName,
+                                description:
+                                    catAdoptionAds.elementAt(index).description,
+                                vac: catAdoptionAds
+                                    .elementAt(index)
+                                    .healthTags
+                                    .contains("Vacinado(a)"),
+                                cast: catAdoptionAds
+                                    .elementAt(index)
+                                    .healthTags
+                                    .contains("Castrado(a)"));
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => CatDetail(
+                                        gatinhoDetail: gatinhoDetail)));
+                          },
+                          child: Text(
+                            "VER MAIS",
+                            style: TextStyle(color: Color(0xff751ff0)),
+                          ),
+                        ),
+                      ],
+                    ),
                   ],
                 ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: <Widget>[
-                  _tag(
-                      catAdoptionAds
-                          .elementAt(index)
-                          .healthTags
-                          .contains("Castrado(a)"),
-                      "Castrado(a)"),
-                  _tag(
-                      catAdoptionAds
-                          .elementAt(index)
-                          .healthTags
-                          .contains("Vacinado(a)"),
-                      "Vacinado(a)"),
-                  TextButton(
-                    onPressed: () {
-                      var gatinhoDetail = CatDetailModel(
-                          id: catAdoptionAds.elementAt(index).id,
-                          name: catAdoptionAds.elementAt(index).catName,
-                          description:
-                              catAdoptionAds.elementAt(index).description,
-                          vac: catAdoptionAds
-                              .elementAt(index)
-                              .healthTags
-                              .contains("Vacinado(a)"),
-                          cast: catAdoptionAds
-                              .elementAt(index)
-                              .healthTags
-                              .contains("Castrado(a)"));
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  CatDetail(gatinhoDetail: gatinhoDetail)));
-                    },
-                    child: Text(
-                      "VER MAIS",
-                      style: TextStyle(color: Color(0xff751ff0)),
-                    ),
-                  ),
-                ],
               ),
             ],
           ),
@@ -366,7 +368,7 @@ class _HomeState extends State<Home> {
   _tag(bool containsTag, String tagLabel) {
     if (containsTag) {
       return Padding(
-        padding: EdgeInsets.all(10),
+        padding: EdgeInsets.all(5),
         child: Container(
           decoration: BoxDecoration(
             shape: BoxShape.rectangle,
