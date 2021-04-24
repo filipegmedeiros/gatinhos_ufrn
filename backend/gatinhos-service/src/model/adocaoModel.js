@@ -29,6 +29,9 @@ const AdocaoSchema = new mongoose.Schema({
     type: String,
     default: "Validar",
   },
+  isHouse: {
+    type: Boolean,
+  },
 });
 
 module.exports = mongoose.model("Adocao", AdocaoSchema);
