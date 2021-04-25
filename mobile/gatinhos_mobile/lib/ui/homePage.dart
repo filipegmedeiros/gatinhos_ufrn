@@ -24,8 +24,8 @@ class _HomeState extends State<Home> {
   List<CatAd> catAdoptionAds = List.empty(growable: true);
 
   Future<List<CatAd>> getAdList() async {
-    //var url = "http://10.0.2.2:3001/api/v1/gatinhos/"; // android
-    var url = "http://localhost:3001/api/v1/gatinhos/"; // ios
+    var url = "http://10.0.2.2:3001/api/v1/gatinhos/"; // android
+    //var url = "http://localhost:3001/api/v1/gatinhos/"; // ios
 
     final adList = await http.get(Uri.parse(url));
 
@@ -115,12 +115,12 @@ class _HomeState extends State<Home> {
       var url;
       if (adRet.id == null) {
         // salve on database
-        //url = "http://10.0.2.2:3001/api/v1/gatinhos/"; // android
-        url = "http://localhost:3001/api/v1/gatinhos/"; // ios
+        url = "http://10.0.2.2:3001/api/v1/gatinhos/"; // android
+        //url = "http://localhost:3001/api/v1/gatinhos/"; // ios
       } else {
         // update database
-        //url = "http://10.0.2.2:3001/api/v1/gatinhos/" + adRet.id; // android
-        url = "http://localhost:3001/api/v1/gatinhos/" + adRet.id; // ios
+        url = "http://10.0.2.2:3001/api/v1/gatinhos/" + adRet.id; // android
+        //url = "http://localhost:3001/api/v1/gatinhos/" + adRet.id; // ios
       }
 
       final response = await http.post(
@@ -153,8 +153,8 @@ class _HomeState extends State<Home> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String token = prefs.getString('token');
 
-    //var url = "http://10.0.2.2:3001/api/v1/gatinhos/" + id; // android
-    var url = "http://localhost:3001/api/v1/gatinhos/" + id; // ios
+    var url = "http://10.0.2.2:3001/api/v1/gatinhos/" + id; // android
+    //var url = "http://localhost:3001/api/v1/gatinhos/" + id; // ios
 
     final response = await http.delete(
       Uri.parse(url),
@@ -175,23 +175,39 @@ class _HomeState extends State<Home> {
         padding: EdgeInsets.zero,
         children: <Widget>[
           Container(
-            height: 110,
+            height: 200,
             child: DrawerHeader(
-              decoration: BoxDecoration(
-                color: Color(0xff3700b3),
-              ),
-              child: Text(
-                "Menu",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
+                decoration: BoxDecoration(
+                  color: Color(0xff3700b3),
                 ),
-              ),
-            ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Container(
+                        width: 160,
+                        height: 100,
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                              fit: BoxFit.fitWidth,
+                              image: AssetImage('images/LogoGatinhos.png')),
+                        )),
+                    SizedBox(height: 10),
+                    Text(
+                      "Menu",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 24,
+                      ),
+                    ),
+                  ],
+                )),
           ),
           ListTile(
             leading: Icon(Icons.home),
-            title: Text("Home"),
+            title: Text("Home",
+                style: TextStyle(
+                  fontSize: 16,
+                )),
             onTap: () {
               // change app to home page
               Navigator.pushNamed(context, Home.routeName);
@@ -199,7 +215,10 @@ class _HomeState extends State<Home> {
           ),
           ListTile(
             leading: Icon(Icons.read_more),
-            title: Text("Pedidos de adoção"),
+            title: Text("Pedidos de adoção",
+                style: TextStyle(
+                  fontSize: 16,
+                )),
             onTap: () {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => AdoptionRequests()));
@@ -207,7 +226,10 @@ class _HomeState extends State<Home> {
           ),
           ListTile(
             leading: Icon(Icons.login),
-            title: Text("Login"),
+            title: Text("Login",
+                style: TextStyle(
+                  fontSize: 16,
+                )),
             onTap: () {
               // change to login page
               Navigator.pushNamed(context, Login.routeName);
@@ -215,7 +237,10 @@ class _HomeState extends State<Home> {
           ),
           ListTile(
             leading: Icon(Icons.logout),
-            title: Text("Logout"),
+            title: Text("Logout",
+                style: TextStyle(
+                  fontSize: 16,
+                )),
             onTap: () async {
               // logout
               SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -386,7 +411,7 @@ class _HomeState extends State<Home> {
   _getCatImage(CatAd cat) {
     Widget imgRet;
 
-    if (cat.img == null) {
+    if (true) {
       imgRet = Container(
         width: 120,
         height: 200,

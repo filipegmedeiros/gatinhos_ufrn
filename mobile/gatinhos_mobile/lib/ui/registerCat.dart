@@ -419,9 +419,9 @@ _catImage(CatAd cat) {
       ),
     );
   } else {
-    //imgRet = Image.network("http://10.0.2.2:3001/api/v1/image/" + cat.id); // android
     imgRet =
-        Image.network("http://localhost:3001/api/v1/image/" + cat.id); // ios
+        Image.network("http://10.0.2.2:3001/api/v1/image/" + cat.id); // android
+    //imgRet = Image.network("http://localhost:3001/api/v1/image/" + cat.id); // ios
   }
   return imgRet;
 }

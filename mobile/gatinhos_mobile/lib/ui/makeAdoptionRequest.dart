@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gatinhos_mobile/ui/homePage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -57,6 +58,8 @@ class _MakeAdoptionRequestState extends State<MakeAdoptionRequest> {
         'adress': ' '
       }),
     );
+
+    Navigator.push(context, MaterialPageRoute(builder: (context) => Home()));
   }
 
   @override
