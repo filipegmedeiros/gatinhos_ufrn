@@ -55,14 +55,14 @@ const deleteForm = async (req, res) => {
 
 const updateBadge = async (req, res) => {
   const { id } = req.params;
-  const { pedido } = req.query;
+  const { validateBadge } = req.body;
 
   try {
-    if (!adocaoService.validateBadge(pedido)) {
+    if (!adocaoService.validateBadge(validateBadge)) {
       return res.status(422).send("Pedido Inválido.");
     }
-    await adocaoService.updateBadge(id, pedido);
-    return res.status(200).send("Pedido atualizado para: " + pedido);
+    await adocaoService.updateBadge(id, validateBadge);
+    return res.status(200).send("Pedido atualizado para: " + validateBadge);
   } catch (error) {
     console.log("Erro no updateBadge", error);
     return res.status(400).send();
